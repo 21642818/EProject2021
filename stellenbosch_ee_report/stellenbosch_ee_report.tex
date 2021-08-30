@@ -1,7 +1,10 @@
 \documentclass[a4paper,12pt]{report}
 
-% Page layout
-\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+% Page layoutP
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}P
+
+% Lorem ipsum
+\usepackage{lipsum} 
 
 % Figures
 \usepackage[margin=\the\parindent,small,bf,sf]{caption}
@@ -96,6 +99,9 @@
 \patchcmd{\ttlh@hang}{\noindent}{}{}{}
 \makeatother
 
+\newcommand{\name}{Gerthardus M. Marais}
+\newcommand{\studentnumber}{21642818}
+\newcommand{\supervisor}{Dr. R. Theart}
 
 \begin{document}
 
@@ -115,6 +121,7 @@
 
 % Contents
 \input{introduction/introduction}
+\input{contents/literature_review.tex}
 \input{conclusion/conclusion}
 
 % Bibliography
