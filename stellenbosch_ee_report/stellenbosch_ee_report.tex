@@ -1,7 +1,11 @@
 \documentclass[a4paper,12pt]{report}
 
+%COMMENT THIS OUT!!!!
+\pdfcompresslevel=0
+\pdfobjcompresslevel=0
+
 % Page layoutP
-\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}P
+\usepackage[left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
 
 % Lorem ipsum
 \usepackage{lipsum} 
@@ -41,6 +45,7 @@
 \usepackage[cmex10]{amsmath}
 \usepackage{amssymb}
 \usepackage{cancel}
+\usepackage{chemmacros,siunitx}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \newcommand{\T}{^\textrm{T}}
 \newcommand{\tr}{\textrm{tr}}
@@ -121,7 +126,8 @@
 
 % Contents
 \input{introduction/introduction}
-\input{contents/literature_review.tex}
+\input{contents/literature_review}
+\input{contents/system_design}
 \input{conclusion/conclusion}
 
 % Bibliography
