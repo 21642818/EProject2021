@@ -26,6 +26,39 @@ class ADCPi(object):
     __bus = None
 
     # local methods
+    @staticmethod
+    def __get_smbus(bus):
+        """
+        Internal method for getting an instance of the i2c bus
+        :param bus: I2C bus number.  If value is None the class will try to
+                    find the i2c bus automatically using the device name
+        :type bus: int
+        :return: i2c bus for target device
+        :rtype: SMBus
+        :raises IOError: Could not open the i2c bus
+        """
+        i2c__bus = 1
+        if bus is not None:
+            i2c__bus = bus
+        else:
+            # detect the device that is being used
+            device = platform.uname()[1]
+            if device == "raspberrypi":  # running on raspberry pi
+                # detect i2C port number and assign to i2c__bus
+                for line in open('/proc/cpuinfo').readlines():
+                    model = re.match('(.*?)\\s*:\\s*(.*)', line)
+                    if model:
+                        (name, value) = (model.group(1), model.group(2))
+                        if name == "Revision":
+                            if value[-4:] in ('0002', '0003'):
+                                i2c__bus = 0  # original model A or B
+                            else:
+                                i2c__bus = 1  # later models
+                            break
+        try:
+            return SMBus(i2c__bus)
+        except IOError:
+            raise 'Could not open the i2c bus'
 
     def __updatebyte(self, byte, mask, value):
         """

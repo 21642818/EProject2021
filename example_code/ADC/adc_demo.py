@@ -1,4 +1,4 @@
-from ADC import ADCPi
+from ADC import *
 
 def main():
     '''
