@@ -1,4 +1,6 @@
-from ADC import *
+import time
+import os
+from ADC import ADCPi
 
 def main():
     '''
