@@ -9,4 +9,6 @@ camera.start_preview()
 sleep(5)
 #now = datetime.now()
 #d = now.strftime("%m%d%Y_%H%M%S")
-camera.capture('./img/'+datetime.now().strftime("%m%d%Y_%H%M%S")+'.jpg')
+filename = './img/'+datetime.now().strftime("%m%d%Y_%H%M%S")+'.jpg'
+#camera.capture('./img/'+datetime.now().strftime("%m%d%Y_%H%M%S")+'.jpg')
+camera.capture(filename)

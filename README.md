@@ -8,10 +8,10 @@ Skirpsie Project for SU
 
 - [x] Relay trigger
 - [x] ADC read
-- [ ] Camera save
-  - [ ] Figure out how to save JPEG to Firebase
-- [ ] temp & humidity read
-- [ ] Water level read
+- [X] Camera save
+  - [X] Figure out how to save JPEG to Firebase
+- [X] temp & humidity read
+- [X] Water level read
 - [ ] Dictionary parse
 - [ ] JSON parse
 - [ ] Firebase connection

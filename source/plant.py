@@ -14,6 +14,7 @@ class SmartPlant:
     __Relay_Ch_3 = 13
     __Relay_Ch_4 = 19
     __Relay_Ch_5 = 26
+    __Float_sw = 21
 
     def __init__(self) -> None:
         
@@ -41,6 +42,12 @@ class SmartPlant:
         GPIO.output(self.__Relay_Ch_5, GPIO.LOW)
 
     def get_relay(self, channel):
+        """
+        Returns the relay channel pin 
+
+        :return: channel
+        :rtype: int
+        """
         if channel == 0:
             return self.__Relay_Ch_1
         elif channel == 1:
@@ -54,30 +61,92 @@ class SmartPlant:
         else: 
             raise Exception("get_relay: Value {} is not valid".format(channel))
     
-    def set_relay(self, relay_channels):
+    def set_relay(self, relay_channels, duration=2):
+        """
+        Sets the relays to high or low for a duration
+
+        :param relay_channel: 1 to 5
+        :type relay_channel: int
+        :param duration: seconds, defaults to 2
+        :type duration: int
+        """
         # TODO: Relpace time.sleep with something else. This halts the program and we don't want it
-        self.gpio_init()
-        for r in range(5):
-            GPIO.output(self.get_relay(r), relay_channels[r])
-        time.sleep(2)
-        for r in range(5):
-            GPIO.output(self.get_relay(r), GPIO.LOW)
-        GPIO.cleanup()
-        # NOTE  Use GPIO.cleanup() after exit
+        if self.read_float_switch == 1:
+            self.gpio_init()
+            for r in range(5):
+                GPIO.output(self.get_relay(r), relay_channels[r])
+            time.sleep(duration)
+            for r in range(5):
+                GPIO.output(self.get_relay(r), GPIO.LOW)
+            GPIO.cleanup()
+            # NOTE  Use GPIO.cleanup() after exit
 
     def get_moisture(self, channel):
+        """
+        Returns the moisture level of the ADC channel
+
+        :param channel: 1 to 4
+        :type channel: int
+        :return: level
+        :rtype: float
+        """
         # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 3.0831282V
         voltage = self.__adc.read_voltage(channel)
         level = ( (5.060569 - voltage)/(5.060569 - 3.0831282) ) * 100
         return level
     
     def read_moisture_levels(self):
+        """
+        Returns array of moisture levels from ADC channels 1 to 4
+        in the format [ channel_1, channel_2, channel_3, channel_4]
+
+        :return: moisture of channels
+        :rtype: list
+        """
         return [self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4) ]
 
     def capture_image(self):
+        """
+        Captures image with timestamp to './img/' and returns the filename
+
+        :return: filename
+        :rtype: string
+        """
         self.__camera.start_preview()
+        # TODO replace time.sleep() with something else
         time.sleep(5)
-        #now = datetime.now()
-        #d = now.strftime("%m%d%Y_%H%M%S")
-        self.__camera.capture('%s.jpg',datetime.now().strftime("%m%d%Y_%H%M%S"))
+        d = datetime.now().strftime("%m%d%Y_%H%M%S")
+        self.__camera.capture('./img/'+d+'.jpg')
         self.__camera.stop_preview()
+        filename = './img/'+d+'.jpg'
+        return filename
+
+    def read_temp_humid(self):
+        """
+        Returns the temprature and humidity reading
+
+        :return: temp, humid
+        :rtype: float
+        """
+        temp = self.__sht.read_temp()
+        humid = self.__sht.read_humid()
+        return temp, humid
+
+    def read_float_switch(self):
+        """
+        Returns the float switch state
+
+        :return: state, 0 or 1
+        :rtype: boolean, int
+        """
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.__Float_sw, GPIO.IN)
+        state = GPIO.input(self.__Float_sw)
+        GPIO.cleanup()
+        return state # HIGH (1) means empty, LOW (0) means full
+    
+    def parse_to_dict(self):
+        """
+        Returns teh measurments as a dictionary
+        """
+

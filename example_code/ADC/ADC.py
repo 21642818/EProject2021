@@ -124,7 +124,7 @@ class ADCPi(object):
         """
         Returns the voltage from the selected ADC channel
 
-        :param channel: 1 to 8
+        :param channel: 1 to 4
         :type channel: int
         :return: voltage
         :rtype: float
