@@ -54,8 +54,7 @@ class SmartPlant:
             raise Exception("get_relay: Value {} is not valid".format(channel))
     
     def set_relay(self, relay_channels):
-        # TODO: Relpace time.sleep with something else. 
-        #       This halts the program and we don't want it
+        # TODO: Relpace time.sleep with something else. This halts the program and we don't want it
         self.gpio_init()
         for r in range(5):
             GPIO.output(self.get_relay(r), relay_channels[r])
@@ -68,4 +67,8 @@ class SmartPlant:
     def get_moisture(self, channel):
         # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 3.0831282V
         voltage = self.__adc.read_voltage(channel)
-        level = 
+        level = ( (5.060569 - voltage)/(5.060569 - 3.0831282) ) * 100
+        return level
+    
+    def read_moisture_levels(self):
+        return [self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4) ]
