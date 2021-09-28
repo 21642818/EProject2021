@@ -1,5 +1,6 @@
 import time
 import os
+import json
 import numpy as np
 import RPi.GPIO as GPIO
 from datetime import datetime
@@ -71,7 +72,7 @@ class SmartPlant:
         :type duration: int
         """
         # TODO: Relpace time.sleep with something else. This halts the program and we don't want it
-        if self.read_float_switch == 1:
+        if self.read_float_switch == 0:
             self.gpio_init()
             for r in range(5):
                 GPIO.output(self.get_relay(r), relay_channels[r])
@@ -79,6 +80,8 @@ class SmartPlant:
             for r in range(5):
                 GPIO.output(self.get_relay(r), GPIO.LOW)
             GPIO.cleanup()
+        else:
+            print("Error: water level is too low")
             # NOTE  Use GPIO.cleanup() after exit
 
     def get_moisture(self, channel):
@@ -115,10 +118,9 @@ class SmartPlant:
         self.__camera.start_preview()
         # TODO replace time.sleep() with something else
         time.sleep(5)
-        d = datetime.now().strftime("%m%d%Y_%H%M%S")
-        self.__camera.capture('./img/'+d+'.jpg')
+        filename = './img/'+datetime.now().strftime("%m%d%Y_%H%M%S")+'.jpg'
+        self.__camera.capture(filename)
         self.__camera.stop_preview()
-        filename = './img/'+d+'.jpg'
         return filename
 
     def read_temp_humid(self):
@@ -130,7 +132,7 @@ class SmartPlant:
         """
         temp = self.__sht.read_temp()
         humid = self.__sht.read_humid()
-        return temp, humid
+        return [ temp, humid ]
 
     def read_float_switch(self):
         """
@@ -145,8 +147,25 @@ class SmartPlant:
         GPIO.cleanup()
         return state # HIGH (1) means empty, LOW (0) means full
     
-    def parse_to_dict(self):
+    def return_data(self):
         """
-        Returns teh measurments as a dictionary
+        Returns the measurments as a dictionary
+
+        :return: data
+        :rtype: dict
         """
+        date_time = datetime.now()
+        data = {
+            "date"          : date_time.strftime("%m/%d/%Y"),
+            "timestamp"     : date_time.strftime("%H:%M:%S"),
+            "soil_moisture" : self.read_moisture_levels,
+            "temp_humid"    : self.read_temp_humid,
+            "float_switch"  : self.read_float_switch,
+            "img"           : self.capture_image,
+        }
+        return data
+
+    def return_json(self,data):
+        json_object = json.dumps(data, indent=4)
+        return json_object
 
