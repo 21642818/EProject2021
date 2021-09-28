@@ -7,7 +7,8 @@ def main():
     Main program function
     '''
 
-    adc = ADCPi(0x68, 14)
+    adc = ADCPi(0x68, 18)
+    adc.set_pga(4)
     os.system('clear')
 
     while True:
