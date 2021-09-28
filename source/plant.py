@@ -2,6 +2,7 @@ import time
 import os
 import numpy as np
 import RPi.GPIO as GPIO
+from datetime import datetime
 from ADC import ADCPi
 from sht20 import SHT20
 from picamera import PiCamera
@@ -21,7 +22,7 @@ class SmartPlant:
         self.__adc.set_pga(2)
 
         #initialize Camera
-        self.__camera = PiCamera(resolution = (3280, 2464), sensor_mode=2)
+        self.__camera = PiCamera(resolution = (3280, 2464), sensor_mode=3)
 
         #initialize Temp&Hum sensor
         self.__sht = SHT20(1, resolution=SHT20.TEMP_RES_14bit)
@@ -72,3 +73,11 @@ class SmartPlant:
     
     def read_moisture_levels(self):
         return [self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4) ]
+
+    def capture_image(self):
+        self.__camera.start_preview()
+        time.sleep(5)
+        #now = datetime.now()
+        #d = now.strftime("%m%d%Y_%H%M%S")
+        self.__camera.capture('%s.jpg',datetime.now().strftime("%m%d%Y_%H%M%S"))
+        self.__camera.stop_preview()

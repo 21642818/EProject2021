@@ -1,10 +1,12 @@
 from picamera import PiCamera
 from time import sleep
 from fractions import Fraction
+from datetime import datetime
 
 camera = PiCamera(resolution = (3280, 2464),
 		sensor_mode=2)
 camera.start_preview()
 sleep(5)
-camera.capture('./image.jpg')
-camera.stop_preview()
+#now = datetime.now()
+#d = now.strftime("%m%d%Y_%H%M%S")
+camera.capture('%s.jpg',datetime.now().strftime("%m%d%Y_%H%M%S"))
