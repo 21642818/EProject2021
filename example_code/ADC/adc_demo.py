@@ -8,7 +8,6 @@ def main():
     '''
 
     adc = ADCPi(0x68, 16)
-    adc.set_pga(2)
     adc.set_conversion_mode(1)
     os.system('clear')
 
