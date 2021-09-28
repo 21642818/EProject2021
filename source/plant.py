@@ -10,6 +10,8 @@ from picamera import PiCamera
 
 class SmartPlant:
 
+    __data = {}
+    __last_img = None
     __Relay_Ch_1 = 5
     __Relay_Ch_2 = 6
     __Relay_Ch_3 = 13
@@ -96,6 +98,8 @@ class SmartPlant:
         # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 3.0831282V
         voltage = self.__adc.read_voltage(channel)
         level = ( (5.060569 - voltage)/(5.060569 - 3.0831282) ) * 100
+        if (level < 0) and (level > 100):
+            level = None
         return level
     
     def read_moisture_levels(self):
@@ -118,9 +122,11 @@ class SmartPlant:
         self.__camera.start_preview()
         # TODO replace time.sleep() with something else
         time.sleep(5)
-        filename = './img/'+datetime.now().strftime("%m%d%Y_%H%M%S")+'.jpg'
+        date_time=datetime.now().strftime("%m%d%Y_%H%M%S")
+        filename = './img/'+date_time+'.jpg'
         self.__camera.capture(filename)
         self.__camera.stop_preview()
+        self.__last_img = date_time
         return filename
 
     def read_temp_humid(self):
@@ -147,12 +153,10 @@ class SmartPlant:
         GPIO.cleanup()
         return state # HIGH (1) means empty, LOW (0) means full
     
-    def return_data(self):
+    def measure(self):
         """
-        Returns the measurments as a dictionary
-
-        :return: data
-        :rtype: dict
+        Runs the measurements and capture
+        it to a dictionary
         """
         date_time = datetime.now()
         data = {
@@ -163,9 +167,34 @@ class SmartPlant:
             "float_switch"  : self.read_float_switch,
             "img"           : self.capture_image,
         }
-        return data
+        self.__data = data
 
-    def return_json(self,data):
-        json_object = json.dumps(data, indent=4)
+    
+    def return_last_img_name(self):
+        """
+        Returns the last img filename
+
+        :return: filename
+        :rtype: str
+        """
+        return self.__last_img
+
+    def return_data(self):
+        """
+        Returns the data as a dictionary
+
+        :return: data
+        :rtype: dict
+        """
+        return self.__data
+
+    def return_json(self):
+        """
+        Returns the data as a json object
+
+        :return: data
+        :rtype: json
+        """
+        json_object = json.dumps(self.__data, indent=4)
         return json_object
 
