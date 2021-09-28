@@ -7,7 +7,7 @@ def main():
     Main program function
     '''
 
-    adc = ADCPi(0x68, 14)
+    adc = ADCPi(0x68, 18)
     os.system('clear')
 
     while True:
