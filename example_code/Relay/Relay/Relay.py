@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 import time
 
-Relay_Ch_1 = 20
+Relay_Ch_1 = 26
 Relay_Ch_2 = 21
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(Relay_Ch_1, GPIO.OUT)
