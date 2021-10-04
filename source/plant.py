@@ -1,5 +1,6 @@
 import time
 import os
+import json
 import numpy as np
 import RPi.GPIO as GPIO
 from datetime import datetime
@@ -9,6 +10,8 @@ from picamera import PiCamera
 
 class SmartPlant:
 
+    __data = {}
+    __last_img = None
     __Relay_Ch_1 = 5
     __Relay_Ch_2 = 6
     __Relay_Ch_3 = 13
@@ -42,12 +45,12 @@ class SmartPlant:
         GPIO.output(self.__Relay_Ch_5, GPIO.LOW)
 
     def get_relay(self, channel):
-        """
+        '''
         Returns the relay channel pin 
 
         :return: channel
         :rtype: int
-        """
+        '''
         if channel == 0:
             return self.__Relay_Ch_1
         elif channel == 1:
@@ -62,16 +65,16 @@ class SmartPlant:
             raise Exception("get_relay: Value {} is not valid".format(channel))
     
     def set_relay(self, relay_channels, duration=2):
-        """
+        '''
         Sets the relays to high or low for a duration
 
         :param relay_channel: 1 to 5
         :type relay_channel: int
         :param duration: seconds, defaults to 2
         :type duration: int
-        """
-        # TODO: Relpace time.sleep with something else. This halts the program and we don't want it
-        if self.read_float_switch == 1:
+        '''
+        # TODO Relpace time.sleep with something else. This halts the program and we don't want it
+        if self.read_float_switch == 0:
             self.gpio_init()
             for r in range(5):
                 GPIO.output(self.get_relay(r), relay_channels[r])
@@ -79,74 +82,119 @@ class SmartPlant:
             for r in range(5):
                 GPIO.output(self.get_relay(r), GPIO.LOW)
             GPIO.cleanup()
+        else:
+            print("Error: water level is too low")
             # NOTE  Use GPIO.cleanup() after exit
 
     def get_moisture(self, channel):
-        """
+        '''
         Returns the moisture level of the ADC channel
 
         :param channel: 1 to 4
         :type channel: int
         :return: level
         :rtype: float
-        """
+        '''
         # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 3.0831282V
         voltage = self.__adc.read_voltage(channel)
         level = ( (5.060569 - voltage)/(5.060569 - 3.0831282) ) * 100
+        if (level < 0) and (level > 100):
+            level = None
         return level
     
     def read_moisture_levels(self):
-        """
+        '''
         Returns array of moisture levels from ADC channels 1 to 4
         in the format [ channel_1, channel_2, channel_3, channel_4]
 
         :return: moisture of channels
         :rtype: list
-        """
+        '''
         return [self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4) ]
 
     def capture_image(self):
-        """
+        '''
         Captures image with timestamp to './img/' and returns the filename
 
         :return: filename
         :rtype: string
-        """
+        '''
         self.__camera.start_preview()
-        # TODO replace time.sleep() with something else
+        # TODO Replace time.sleep() with something else
         time.sleep(5)
-        d = datetime.now().strftime("%m%d%Y_%H%M%S")
-        self.__camera.capture('./img/'+d+'.jpg')
+        date_time=datetime.now().strftime("%m%d%Y_%H%M%S")
+        filename = './img/'+date_time+'.jpg'
+        self.__camera.capture(filename)
         self.__camera.stop_preview()
-        filename = './img/'+d+'.jpg'
+        self.__last_img = date_time
         return filename
 
     def read_temp_humid(self):
-        """
+        '''
         Returns the temprature and humidity reading
 
         :return: temp, humid
         :rtype: float
-        """
+        '''
         temp = self.__sht.read_temp()
         humid = self.__sht.read_humid()
-        return temp, humid
+        return [ temp, humid ]
 
     def read_float_switch(self):
-        """
+        '''
         Returns the float switch state
 
         :return: state, 0 or 1
         :rtype: boolean, int
-        """
+        '''
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.__Float_sw, GPIO.IN)
         state = GPIO.input(self.__Float_sw)
         GPIO.cleanup()
         return state # HIGH (1) means empty, LOW (0) means full
     
-    def parse_to_dict(self):
-        """
-        Returns teh measurments as a dictionary
-        """
+    def measure(self):
+        '''
+        Runs the measurements and capture
+        it to a dictionary
+        '''
+        date_time = datetime.now()
+        data = {
+            "date"          : date_time.strftime("%m-%d-%Y"),
+            "timestamp"     : date_time.strftime("%H:%M:%S"),
+            "soil_moisture" : self.read_moisture_levels,
+            "temp_humid"    : self.read_temp_humid,
+            "float_switch"  : self.read_float_switch,
+            "img"           : self.capture_image,
+        }
+        self.__data = data
+
+    
+    def return_last_img_name(self):
+        '''
+        Returns the last img filename
+
+        :return: filename
+        :rtype: str
+        '''
+        return self.__last_img
+
+    def return_data(self):
+        '''
+        Returns the data as a dictionary
+
+        :return: data
+        :rtype: dict
+        '''
+        return self.__data
+
+    def return_json(self):
+        '''
+        Returns the data as a json object
+
+        :return: data
+        :rtype: json
+        '''
+        json_object = json.dumps(self.__data, indent=4)
+        return json_object
 
