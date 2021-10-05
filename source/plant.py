@@ -162,10 +162,10 @@ class SmartPlant:
         data = {
             "date"          : date_time.strftime("%m-%d-%Y"),
             "timestamp"     : date_time.strftime("%H:%M:%S"),
-            "soil_moisture" : self.read_moisture_levels,
-            "temp_humid"    : self.read_temp_humid,
-            "float_switch"  : self.read_float_switch,
-            "img"           : self.capture_image,
+            "soil_moisture" : self.read_moisture_levels(),
+            "temp_humid"    : self.read_temp_humid(),
+            "float_switch"  : self.read_float_switch(),
+            "img"           : self.capture_image(),
         }
         self.__data = data
 
