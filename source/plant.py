@@ -23,7 +23,7 @@ class SmartPlant:
         
         #initialize ADC
         self.__adc = ADCPi(0x68, 18)
-        self.__adc.set_pga(2)
+        self.__adc.set_conversion_mode(0)
 
         #initialize Camera
         self.__camera = PiCamera(resolution = (3280, 2464), sensor_mode=3)
@@ -95,9 +95,9 @@ class SmartPlant:
         :return: level
         :rtype: float
         '''
-        # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 3.0831282V
+        # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 2.929132167V
         voltage = self.__adc.read_voltage(channel)
-        level = ( (5.060569 - voltage)/(5.060569 - 3.0831282) ) * 100
+        level = ( (5.060569 - voltage)   /(5.060569 - 2.929132167) ) * 100
         if (level < 0) and (level > 100):
             level = None
         return level
