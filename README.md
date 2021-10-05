@@ -6,7 +6,7 @@ Skirpsie Project for SU
 
 ### MCU programming
 
-- [x] Relay trigger
+- [X] Relay trigger
 - [x] ADC read
 - [X] Camera save
   - [X] Figure out how to save JPEG to Firebase
