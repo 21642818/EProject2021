@@ -25,10 +25,6 @@ class SmartPlant:
         self.__adc = ADCPi(0x68, 18)
         self.__adc.set_conversion_mode(0)
 
-        #initialize Camera
-        self.__camera = PiCamera()
-        self.__camera.resolution = (3280, 2464)
-
         #initialize Temp&Hum sensor
         self.__sht = SHT20(1, resolution=SHT20.TEMP_RES_14bit)
 
@@ -120,14 +116,17 @@ class SmartPlant:
         :return: filename
         :rtype: string
         '''
-        self.__camera.start_preview()
+        #initialize Camera
+        camera = PiCamera()
+        camera.resolution = (3280, 2464)
+        camera.start_preview()
         # TODO Replace time.sleep() with something else
         time.sleep(5)
         date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
         filename = '/img/'+date_time+'.jpg'
 	    # TODO Find out why this throws no file or directory error
-        self.__camera.capture(filename)
-        self.__camera.stop_preview()
+        camera.capture(filename)
+        camera.stop_preview()
         self.__last_img = date_time
         return filename
 
