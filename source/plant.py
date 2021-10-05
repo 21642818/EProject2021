@@ -98,7 +98,7 @@ class SmartPlant:
         '''
         # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 2.929132167V
         voltage = self.__adc.read_voltage(channel)
-        level = ( (5.060569 - voltage)   /(5.060569 - 2.929132167) ) * 100
+        level = ( (5.060569 - voltage)   /(5.060569 - 2.929132) ) * 100
         if (level < 0) and (level > 100):
             level = None
         return level
@@ -123,9 +123,9 @@ class SmartPlant:
         self.__camera.start_preview()
         # TODO Replace time.sleep() with something else
         time.sleep(5)
-        date_time=datetime.now().strftime("%m%d%Y_%H%M%S")
+        date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
         filename = '/img/'+date_time+'.jpg'
-	# TODO Find out why this throws no file or directpry error
+	    # TODO Find out why this throws no file or directory error
         self.__camera.capture(filename)
         self.__camera.stop_preview()
         self.__last_img = date_time
@@ -167,7 +167,7 @@ class SmartPlant:
             "soil_moisture" : self.read_moisture_levels(),
             "temp_humid"    : self.read_temp_humid(),
             "float_switch"  : self.read_float_switch(),
-            #"img"           : self.capture_image(),
+            "img"           : self.capture_image(),
         }
         self.__data = data
 
