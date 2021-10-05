@@ -123,7 +123,7 @@ class SmartPlant:
         # TODO Replace time.sleep() with something else
         time.sleep(5)
         date_time=datetime.now().strftime("%m%d%Y_%H%M%S")
-        filename = './img/'+date_time+'.jpg'
+        filename = '/img/'+date_time+'.jpg'
         self.__camera.capture(filename)
         self.__camera.stop_preview()
         self.__last_img = date_time
