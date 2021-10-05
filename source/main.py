@@ -10,7 +10,7 @@ firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb
 def update_database():
     sp.measure()
     data = sp.return_data()
-    folder = '/data/'+data['date']+'/'+data['timetamp']
+    folder = '/data/'+data['date']+'/'+data['timestamp']
     print(data)
     #result = firebase.post(url=folder, data=data)
     #print(result) 
