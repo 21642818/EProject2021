@@ -20,13 +20,14 @@ class SmartPlant:
     __Float_sw = 21
 
     def __init__(self) -> None:
-        
+
         #initialize ADC
         self.__adc = ADCPi(0x68, 18)
         self.__adc.set_conversion_mode(0)
 
         #initialize Camera
-        self.__camera = PiCamera(resolution = (3280, 2464), sensor_mode=3)
+        self.__camera = PiCamera()
+        self.__camera.resolution = (3280, 2464)
 
         #initialize Temp&Hum sensor
         self.__sht = SHT20(1, resolution=SHT20.TEMP_RES_14bit)
@@ -61,9 +62,9 @@ class SmartPlant:
             return self.__Relay_Ch_4
         elif channel == 4:
             return self.__Relay_Ch_5
-        else: 
+        else:
             raise Exception("get_relay: Value {} is not valid".format(channel))
-    
+
     def set_relay(self, relay_channels, duration=2):
         '''
         Sets the relays to high or low for a duration
@@ -101,7 +102,7 @@ class SmartPlant:
         if (level < 0) and (level > 100):
             level = None
         return level
-    
+
     def read_moisture_levels(self):
         '''
         Returns array of moisture levels from ADC channels 1 to 4
@@ -124,6 +125,7 @@ class SmartPlant:
         time.sleep(5)
         date_time=datetime.now().strftime("%m%d%Y_%H%M%S")
         filename = '/img/'+date_time+'.jpg'
+	# TODO Find out why this throws no file or directpry error
         self.__camera.capture(filename)
         self.__camera.stop_preview()
         self.__last_img = date_time
@@ -165,7 +167,7 @@ class SmartPlant:
             "soil_moisture" : self.read_moisture_levels(),
             "temp_humid"    : self.read_temp_humid(),
             "float_switch"  : self.read_float_switch(),
-            "img"           : self.capture_image(),
+            #"img"           : self.capture_image(),
         }
         self.__data = data
 

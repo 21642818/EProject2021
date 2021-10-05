@@ -12,8 +12,8 @@ def update_database():
     data = sp.return_data()
     folder = '/data/'+data['date']+'/'+data['timestamp']
     print(data)
-    #result = firebase.post(url=folder, data=data)
-    #print(result) 
+    result = firebase.post(url=folder, data=data)
+    print(result)
     #imagePath = data["img"]
     #imageBlob = sp.return_last_img_name()
     #imageBlob.upload_from_filename(imagePath)
