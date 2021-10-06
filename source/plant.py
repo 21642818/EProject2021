@@ -2,6 +2,7 @@ import time
 import os
 import json
 import numpy as np
+import cv2
 import RPi.GPIO as GPIO
 from datetime import datetime
 from ADC import ADCPi
@@ -117,16 +118,21 @@ class SmartPlant:
         :rtype: string
         '''
         #initialize Camera
-        with PiCamera() as camera:
-            camera.resolution = (3280, 2464)
+        with PiCamera(sensor_mode=2) as camera:
+            camera.resolution = (3264, 2464)
+            camera.framerate = 5
             date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
             filename = './img/'+date_time+'.jpg'
+            image = np.empty((camera.resolution[1] * camera.resolution[0] * 3), dtype=np.uint8)
             camera.start_preview()
             # TODO Replace time.sleep() with something else
-            time.sleep(2)
-	        # TODO Find out why this throws no file or directory error
-            camera.capture(filename)
+            time.sleep(5)
+	        # NOTE no file or directory error should be avoided now
+            camera.capture(image, 'bgr')
             camera.stop_preview()
+            image = image.reshape((camera.resolution[1], camera.resolution[0], 3))
+            status = cv2.imwrite(filename, image)
+            assert(status, "Error: image did not save")
             self.__last_img = date_time
         return filename
 
