@@ -94,10 +94,10 @@ class SmartPlant:
         '''
         # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 2.929132167V
         voltage = self.__adc.read_voltage(channel)
-        level = ( (5.060569 - voltage)   /(5.060569 - 2.929132) ) * 100
-        if (level < 0) and (level > 100):
+        level = ((5.060569 - voltage)/(5.060569 - 2.929132) ) * 100
+        if (level < 0.0) and (level > 100.0):
             level = None
-        return level
+        return round(level, 2)
 
     def read_moisture_levels(self):
         '''
