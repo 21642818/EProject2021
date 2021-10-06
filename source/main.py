@@ -18,7 +18,7 @@ def update_database():
     print(result)
     imageBlob = bucket.blob('/')
     imagePath = data["img"]
-    imageBlob = bucket.blob(sp.return_last_img_name)
+    imageBlob = bucket.blob(sp.return_last_img_name())
     imageBlob.upload_from_filename(imagePath)
 
 
