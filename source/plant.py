@@ -124,15 +124,15 @@ class SmartPlant:
             camera.start_preview()
             time.sleep(5)
             date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
-            filename = '/img/'+date_time+'.jpg'
+            filename = 'img/'+date_time+'.jpg'
             image = np.empty((camera.resolution[1] * camera.resolution[0] * 3), dtype=np.uint8)
-	    # NOTE no file or directory error should be avoided now
+	        # NOTE no file or directory error should be avoided now
             camera.capture(image, 'bgr')
             image = image.reshape((camera.resolution[1], camera.resolution[0], 3))
             status = cv2.imwrite(filename, image)
             if status == False:
                 camera.stop_preview()
-                raise Exception("Error: image did not save")
+                raise Exception("Error: image '{}' did not save".format(filename))
             self.__last_img = date_time
         return filename
 
