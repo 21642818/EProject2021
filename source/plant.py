@@ -120,12 +120,12 @@ class SmartPlant:
         with PiCamera() as camera:
             camera.resolution = (3280, 2464)
             date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
-            filename = '/img/'+date_time+'.png'
+            filename = './img/'+date_time+'.jpg'
             camera.start_preview()
             # TODO Replace time.sleep() with something else
-            time.sleep(5)
+            time.sleep(2)
 	        # TODO Find out why this throws no file or directory error
-            camera.capture('img.png')
+            camera.capture(filename)
             camera.stop_preview()
             self.__last_img = date_time
         return filename

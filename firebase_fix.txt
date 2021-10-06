@@ -1,0 +1,18 @@
+Step 1:
+- Open python environment. Type in:
+	>>> import sys
+	>>> sys.path
+- Find the path that ends with '.../site-packages/'
+- Terminate python environment with Ctrl+D
+
+Step 2:
+- Type in the following commmands in terminal:
+	cd 'YOUR ENVIRO PATH/firebase'
+	mv async.py asyncn.py
+
+Step3: 
+- Change 
+	'from .async import ...' 
+  to
+	'from .asyncn import ...'
+  in the files __init__.py and firebase.py
