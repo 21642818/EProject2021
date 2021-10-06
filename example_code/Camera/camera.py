@@ -6,15 +6,16 @@ from fractions import Fraction
 from datetime import datetime
 
 with PiCamera() as camera:
-    camera.resolution = (3280, 2464)
+    camera.resolution = (3264, 2464)
+    camera.framerate = 5
     camera.start_preview()
-    sleep(2)
+    sleep(5)
     #now = datetime.now()
     #d = now.strftime("%m%d%Y_%H%M%S")
-    filename = './img/'+datetime.now().strftime("%m%d%Y-%H%M%S")+'.png'
+    filename = 'img/'+datetime.now().strftime("%m%d%Y-%H%M%S")+'.jpg'
     #camera.capture('./img/'+datetime.now().strftime("%m%d%Y_%H%M%S")+'.jpg')
-    image = np.empty((2464 * 3280 * 3,), dtype=np.uint8)
-    camera.capture(image, 'bgr')
-    image = image.reshape((2464, 3280, 3))
+    image = np.empty((3264, 2464, 3), dtype=np.uint8)
+    camera.capture(image, 'rgb')
     cv2.imwrite(filename, image)
+    #camera.capture(filename)
     camera.stop_preview()
