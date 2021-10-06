@@ -16,5 +16,6 @@ with PiCamera() as camera:
     image = np.empty((2464 * 3280 * 3,), dtype=np.uint8)
     camera.capture(image, 'bgr')
     image = image.reshape((2464, 3280, 3))
-    cv2.imwrite(filename, image)
+    status = cv2.imwrite(filename, image)
+    print(status)
     camera.stop_preview()
