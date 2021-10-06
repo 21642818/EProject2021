@@ -118,21 +118,20 @@ class SmartPlant:
         :rtype: string
         '''
         #initialize Camera
-        with PiCamera(sensor_mode=2) as camera:
+        with PiCamera() as camera:
             camera.resolution = (3264, 2464)
             camera.framerate = 5
-            date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
-            filename = './img/'+date_time+'.jpg'
-            image = np.empty((camera.resolution[1] * camera.resolution[0] * 3), dtype=np.uint8)
             camera.start_preview()
-            # TODO Replace time.sleep() with something else
             time.sleep(5)
-	        # NOTE no file or directory error should be avoided now
+            date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
+            filename = '/img/'+date_time+'.jpg'
+            image = np.empty((camera.resolution[1] * camera.resolution[0] * 3), dtype=np.uint8)
+	    # NOTE no file or directory error should be avoided now
             camera.capture(image, 'bgr')
-            camera.stop_preview()
             image = image.reshape((camera.resolution[1], camera.resolution[0], 3))
             status = cv2.imwrite(filename, image)
             if status == False:
+                camera.stop_preview()
                 raise Exception("Error: image did not save")
             self.__last_img = date_time
         return filename
@@ -160,7 +159,7 @@ class SmartPlant:
         state = GPIO.input(self.__Float_sw)
         GPIO.cleanup()
         return state # HIGH (1) means empty, LOW (0) means full
-    
+
     def measure(self):
         '''
         Runs the measurements and capture
@@ -177,7 +176,6 @@ class SmartPlant:
         }
         self.__data = data
 
-    
     def return_last_img_name(self):
         '''
         Returns the last img filename
