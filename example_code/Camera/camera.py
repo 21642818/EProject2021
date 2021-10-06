@@ -14,16 +14,10 @@ with PiCamera() as camera:
     #d = now.strftime("%m%d%Y_%H%M%S")
     filename = 'img/'+datetime.now().strftime("%m%d%Y-%H%M%S")+'.jpg'
     #camera.capture('./img/'+datetime.now().strftime("%m%d%Y_%H%M%S")+'.jpg')
-<<<<<<< HEAD
-    image = np.empty((3264, 2464, 3), dtype=np.uint8)
-    camera.capture(image, 'rgb')
-    cv2.imwrite(filename, image)
-    #camera.capture(filename)
-=======
-    image = np.empty((2464 * 3280 * 3,), dtype=np.uint8)
+    image = np.empty((camera.resolution[1] * camera.resolution[0] * 3), dtype=np.uint8)
     camera.capture(image, 'bgr')
-    image = image.reshape((2464, 3280, 3))
+    image = image.reshape((camera.resolution[1], camera.resolution[0], 3))
     status = cv2.imwrite(filename, image)
-    print(status)
->>>>>>> eac9a41d27d61bb3e842c7d989a90fa4c6aa4baf
+    print ("Camera imaged saved to {}: {}".format(filename, status))
+    #camera.capture(filename)
     camera.stop_preview()
