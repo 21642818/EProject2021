@@ -4,6 +4,7 @@ import os
 from firebase import firebase
 
 sp = SmartPlant()
+
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/var/local/eproject2021-555cc-firebase-adminsdk-94yit-faec66311f.json"
 firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb.europe-west1.firebasedatabase.app/', None)
 client = storage.Client()
