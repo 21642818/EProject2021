@@ -130,8 +130,8 @@ class SmartPlant:
             camera.capture(image, 'bgr')
             image = image.reshape((camera.resolution[1], camera.resolution[0], 3))
             status = cv2.imwrite(filename, image)
-            if status == False:
-                camera.stop_preview()
+            camera.stop_preview()
+            if not status:
                 raise Exception("Error: image '{}' did not save".format(filename))
             self.__last_img = date_time
         return filename
