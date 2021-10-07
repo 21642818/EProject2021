@@ -9,7 +9,7 @@ def main():
 
     adc = ADCPi(0x68, 18)
     adc.set_conversion_mode(0)
-    adc_offset = [2.978702, 2.843724, 2.742733, 2.769533]
+    adc_offset = [2.983771, 2.847210, 2.747443, 2.773041]
     os.system('clear')
 
     while True:
@@ -26,7 +26,7 @@ def main():
         if (level < 0.0) and (level > 100.0):
             level = None
         print (round(level, 2))
-        
+
         time.sleep(5)
 
 if __name__ == "__main__":

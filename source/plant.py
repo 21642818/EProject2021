@@ -21,7 +21,7 @@ class SmartPlant:
     __Relay_Ch_5 = 26
     __Float_sw = 21
 
-    __adc_offset = [ 2.833673036, 2.833673036, 2.833673036, 2.833673036]
+    __adc_offset = [ 2.83786625, 2.83786625, 2.83786625, 2.83786625]
 
     def __init__(self) -> None:
 
@@ -33,7 +33,7 @@ class SmartPlant:
         self.__sht = SHT20(1, resolution=SHT20.TEMP_RES_14bit)
 
         # TODO read offset data from file
-        self.__adc_offset = [2.978702, 2.843724, 2.742733, 2.769533]
+        self.__adc_offset = [2.983771, 2.847210, 2.747443, 2.773041]
 
     def gpio_init(self):
         GPIO.setmode(GPIO.BCM)
