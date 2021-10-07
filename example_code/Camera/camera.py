@@ -12,5 +12,6 @@ time.sleep(0.1)
 camera.capture(rawCapture, format="bgr")
 image = rawCapture.array
 # display the image on screen and wait for a keypress
-cv2.imsave("image.jpg", image)
+status = cv2.imwrite("image.jpg", image)
 cv2.waitKey(0)
+print (status)
