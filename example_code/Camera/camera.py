@@ -1,11 +1,12 @@
 # import the necessary packages
 from picamera.array import PiRGBArray
 from picamera import PiCamera
+from datetime import datetime
 import time
 import cv2
 
-date_time = time.datetime.now().strftime("%m%d%Y-%H%M%S")
-filename = './img/'+date_time+'.jpg'
+date_time = datetime.now().strftime("%m%d%Y-%H%M%S")
+filename = 'img/'+date_time+'.jpg'
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
 camera.resolution = (2048, 1536)
