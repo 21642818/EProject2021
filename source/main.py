@@ -24,5 +24,4 @@ def update_database():
     imageBlob = bucket.blob(data["img_path"])
     imageBlob.upload_from_filename(imagePath)
 
-
 update_database()
