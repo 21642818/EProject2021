@@ -21,6 +21,8 @@ class SmartPlant:
     __Relay_Ch_5 = 26
     __Float_sw = 21
 
+    __adc_offset = [ 2.833673036, 2.833673036, 2.833673036, 2.833673036]
+
     def __init__(self) -> None:
 
         #initialize ADC
@@ -29,6 +31,9 @@ class SmartPlant:
 
         #initialize Temp&Hum sensor
         self.__sht = SHT20(1, resolution=SHT20.TEMP_RES_14bit)
+
+        # TODO read offset data from file
+        self.__adc_offset = [2.978702, 2.843724, 2.742733, 2.769533]
 
     def gpio_init(self):
         GPIO.setmode(GPIO.BCM)
@@ -96,7 +101,8 @@ class SmartPlant:
         '''
         # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 2.929132167V
         voltage = self.__adc.read_voltage(channel)
-        level = ((5.060569 - voltage)/(5.060569 - 2.929132) ) * 100
+        offset = self.__adc_offset[channel - 1]
+        level = ((5.060569 - voltage)/(5.060569 - offset) ) * 100
         if (level < 0.0) and (level > 100.0):
             level = None
         return round(level, 2)
