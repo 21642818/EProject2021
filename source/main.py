@@ -18,9 +18,8 @@ def update_database():
     result = firebase.post(url=folder, data=data)
     print(result)
     imageBlob = bucket.blob('/')
-    imageBlob = bucket.blob('img/')
-    imagePath = data["img"]
-    imageBlob = bucket.blob(sp.return_last_img_name())
+    imagePath = data["img_path"]
+    imageBlob = bucket.blob(data["img"])
     imageBlob.upload_from_filename(imagePath)
 
 

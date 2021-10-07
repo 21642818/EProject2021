@@ -2,12 +2,13 @@ import time
 import os
 import json
 import numpy as np
-import cv2
 import RPi.GPIO as GPIO
 from datetime import datetime
 from ADC import ADCPi
 from sht20 import SHT20
 from picamera import PiCamera
+from picamera.array import PiRGBArray
+import cv2
 
 class SmartPlant:
 
@@ -117,24 +118,23 @@ class SmartPlant:
         :return: filename
         :rtype: string
         '''
+        date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
+        filename = 'img/'+date_time+'.jpg'
         #initialize Camera
         with PiCamera() as camera:
-            camera.resolution = (3264, 2464)
-            camera.framerate = 5
-            camera.start_preview()
-            time.sleep(5)
-            date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
-            filename = 'img/'+date_time+'.jpg'
-            image = np.empty((camera.resolution[1] * camera.resolution[0] * 3), dtype=np.uint8)
-	        # NOTE no file or directory error should be avoided now
-            camera.capture(image, 'bgr')
-            image = image.reshape((camera.resolution[1], camera.resolution[0], 3))
+            camera.resolution = (2048, 1536)
+            rawCapture = PiRGBArray(camera)
+            # allow the camera to warmup
+            time.sleep(0.1)
+            # grab an image from the camera
+            camera.capture(rawCapture, format="bgr")
+            image = rawCapture.array
             status = cv2.imwrite(filename, image)
-            camera.stop_preview()
+            cv2.waitKey(0)
             if not status:
                 raise Exception("Error: image '{}' did not save".format(filename))
             self.__last_img = date_time
-        return filename
+        return filename, date_time
 
     def read_temp_humid(self):
         '''
@@ -165,6 +165,7 @@ class SmartPlant:
         Runs the measurements and capture
         it to a dictionary
         '''
+        file, img = self.capture_image()
         date_time = datetime.now()
         data = {
             "date"          : date_time.strftime("%m-%d-%Y"),
@@ -172,7 +173,8 @@ class SmartPlant:
             "soil_moisture" : self.read_moisture_levels(),
             "temp_humid"    : self.read_temp_humid(),
             "float_switch"  : self.read_float_switch(),
-            "img"           : self.capture_image(),
+            "img_path"      : file,
+            "img"           : img,
         }
         self.__data = data
 

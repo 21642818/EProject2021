@@ -3,6 +3,9 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 import time
 import cv2
+
+date_time = time.datetime.now().strftime("%m%d%Y-%H%M%S")
+filename = './img/'+date_time+'.jpg'
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
 camera.resolution = (2048, 1536)
@@ -13,6 +16,6 @@ time.sleep(0.1)
 camera.capture(rawCapture, format="bgr")
 image = rawCapture.array
 # display the image on screen and wait for a keypress
-status = cv2.imwrite("image2.png", image)
+status = cv2.imwrite(filename, image)
 cv2.waitKey(0)
 print (status)
