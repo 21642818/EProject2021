@@ -119,7 +119,7 @@ class SmartPlant:
         :rtype: string
         '''
         date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
-        filename = 'img/'+date_time+'.jpg'
+        filename = 'img/'+date_time+'.png'
         #initialize Camera
         with PiCamera() as camera:
             camera.resolution = (2048, 1536)
