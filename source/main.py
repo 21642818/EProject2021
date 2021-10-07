@@ -3,6 +3,8 @@ from google.cloud import storage
 import os
 from firebase import firebase
 
+os.system('sudo htpdate -s firebase.google.com')
+
 sp = SmartPlant()
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/var/local/eproject2021-555cc-firebase-adminsdk-94yit-faec66311f.json"
