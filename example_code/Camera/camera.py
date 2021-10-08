@@ -13,10 +13,9 @@ def take_photo():
     camera.resolution = (2048, 1536)
     rawCapture = PiRGBArray(camera)
     # allow the camera to warmup
-    time.sleep(0.1)
+    time.sleep(0.5)
     # grab an image from the camera
     camera.capture(rawCapture, format="bgr")
-    camera.close_preview()
     camera.close()
     image = rawCapture.array
     # display the image on screen and wait for a keypress
