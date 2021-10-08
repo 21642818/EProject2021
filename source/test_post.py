@@ -18,11 +18,12 @@ def post_firebase_test():
 def get_firebase_test():
     folder = "/cmd/"
     result = firebase.get(url=folder, name=None)
-    print(result)
+    for r in result:
+       print(result[r]["watering"])
 
 def delete_firebase_test():
     folder = "/cmd/"
     result = firebase.delete(url=folder, name=None)
     print(result)
 
-post_firebase_test()
+get_firebase_test()
