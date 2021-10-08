@@ -15,14 +15,14 @@ def post_firebase_test():
     result = firebase.post(url=folder, data=data)
     print(result)
 
-def get_firebase_tes():
+def get_firebase_test():
     folder = "/cmd/"
-    result = firebase.get(url=folder)
+    result = firebase.get(url=folder, name=None)
     print(result)
 
-def delete_firebase():
+def delete_firebase_test():
     folder = "/cmd/"
-    result = firebase.delete(url=folder)
+    result = firebase.delete(url=folder, name=None)
     print(result)
 
 post_firebase_test()
