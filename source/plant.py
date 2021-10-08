@@ -108,8 +108,9 @@ class SmartPlant:
         '''
         # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 2.929132167V
         voltage = self.__adc.read_voltage(channel)
-        offset = self.__adc_offset[channel - 1]
-        level = ((5.060569 - voltage)/(5.060569 - offset) ) * 100
+        #offset = self.__adc_offset[channel - 1]
+        #level = ((5.060569 - voltage)/(5.060569 - offset) ) * 100
+        level = 5.060569 - voltage*10
         if (level < 0.0) and (level > 100.0):
             level = None
         return round(level, 2)
@@ -159,8 +160,8 @@ class SmartPlant:
         :return: temp, humid
         :rtype: float
         '''
-        temp = self.__sht.read_temp()
-        humid = self.__sht.read_humid()
+        temp = round(self.__sht.read_temp(), 2)
+        humid = round(self.__sht.read_humid(), 2)
         return [ temp, humid ]
 
     def read_float_switch(self):
