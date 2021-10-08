@@ -68,26 +68,33 @@ class SmartPlant:
         else:
             raise Exception("get_relay: Value {} is not valid".format(channel))
 
-    def set_relay(self, relay_channels, duration=2):
+    def set_pump(self, relay_channels, duration=1):
         '''
         Sets the relays to high or low for a duration
 
-        :param relay_channel: 1 to 5
+        :param relay_channel: 1 to 4
         :type relay_channel: int
-        :param duration: seconds, defaults to 2
+        :param duration: seconds, defaults to 1
         :type duration: int
         '''
+        __valves_opened_flag = 0
         # TODO Relpace time.sleep with something else. This halts the program and we don't want it
         if self.read_float_switch == 0:
             self.gpio_init()
-            for r in range(5):
+            for r in range(4):
                 GPIO.output(self.get_relay(r), relay_channels[r])
-            time.sleep(duration)
-            for r in range(5):
+                __valves_opened_flag = __valves_opened_flag | relay_channels[r]
+            if __valves_opened_flag:
+                GPIO.output(self.get_relay(5), GPIO.HIGH)
+                time.sleep(duration)
+                GPIO.output(self.get_relay(5), GPIO.LOW)
+            for r in range(4):
                 GPIO.output(self.get_relay(r), GPIO.LOW)
             GPIO.cleanup()
+            return True
         else:
             print("Error: water level is too low")
+            return False
             # NOTE  Use GPIO.cleanup() after exit
 
     def get_moisture(self, channel):
@@ -124,7 +131,7 @@ class SmartPlant:
         :return: filename
         :rtype: string
         '''
-        date_time=datetime.now().strftime("%m%d%Y-%H%M%S")
+        date_time=datetime.now().strftime("%Y%m%d-%H%M%S")
         filename = 'img/'+date_time+'.png'
         #initialize Camera
         with PiCamera() as camera:
@@ -174,7 +181,7 @@ class SmartPlant:
         file, img = self.capture_image()
         date_time = datetime.now()
         data = {
-            "date"          : date_time.strftime("%m-%d-%Y"),
+            "date"          : date_time.strftime("%Y-%m-%d"),
             "timestamp"     : date_time.strftime("%H:%M:%S"),
             "soil_moisture" : self.read_moisture_levels(),
             "temp_humid"    : self.read_temp_humid(),
@@ -211,4 +218,15 @@ class SmartPlant:
         '''
         json_object = json.dumps(self.__data, indent=4)
         return json_object
+
+    def water(self, pumps=[0,0,0,0], duration = 1):
+        '''
+        Waters the plants by turning on the valves for a duration of time
+        
+        :param pumps: array of 4
+        :type pumps: int array
+        :param duration: seconds
+        :type duration: int
+        '''
+        return self.set_pump(pumps,duration)
 
