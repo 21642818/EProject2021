@@ -178,7 +178,11 @@ class SmartPlant:
         Runs the measurements and capture
         it to a dictionary
         '''
-        file, img = self.capture_image()
+        hour = datetime.now().hour
+        if (hour > 8) and (hour < 20) : 
+            file, img = self.capture_image()
+        else :
+            file, img = None
         date_time = datetime.now()
         data = {
             "date"          : date_time.strftime("%Y-%m-%d"),

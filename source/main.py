@@ -20,10 +20,12 @@ def post_firebase():
     print(data)
     result = firebase.post(url=folder, data=data)
     print(result)
-    imageBlob = bucket.blob('/')
-    imagePath = data["img_path"]
-    imageBlob = bucket.blob(data["img_path"])
-    imageBlob.upload_from_filename(imagePath)
+    if data["img_path"] != None:
+        imageBlob = bucket.blob('/')
+        imagePath = data["img_path"]
+        imageBlob = bucket.blob(data["img_path"])
+        imageBlob.upload_from_filename(imagePath)
+    pass
 
 def get_firebase():
     folder = "/cmd/"
@@ -33,15 +35,16 @@ def get_firebase():
             watering = result[r]["watering"]
             flag = sp.water(watering,1)
             if flag:
-                status = firebase.delete(folder,None)
-                status = firebase.delete(url="/flags/",None)
+                status = firebase.delete(folder, name=None)
                 print(status)
+                status = firebase.delete(url="/flags/", name=None)
             else:
                 status = firebase.post(url="/flags/", data={"watered" : flag})
             break
+    pass
 
 if __name__ == '__main__':
-    scheduler = BlockingScheduler()
+    scheduler = BlockingScheduler(job_defaults={'max_instances': 2})
     scheduler.add_job(post_firebase, 'interval', seconds=30)
     #scheduler.add_job(get_firebase, 'interval', seconds=20)
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
