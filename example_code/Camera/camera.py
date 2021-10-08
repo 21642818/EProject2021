@@ -22,7 +22,7 @@ def take_photo():
     image = rawCapture.array
     # display the image on screen and wait for a keypress
     status = cv2.imwrite(filename, image)
-    cv2.waitKey(0.1)
+    cv2.waitKey(1)
     print (status)
 
 take_photo()
