@@ -146,7 +146,7 @@ class SmartPlant:
             cv2.waitKey(0)
             if not status:
                 raise Exception("Error: image '{}' did not save".format(filename))
-            self.__last_img = date_time
+            camera.close()
         return filename, date_time
 
     def read_temp_humid(self):
