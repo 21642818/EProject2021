@@ -135,17 +135,19 @@ class SmartPlant:
         filename = 'img/'+date_time+'.png'
         #initialize Camera
         with PiCamera() as camera:
-            camera.resolution = (2048, 1536)
-            rawCapture = PiRGBArray(camera)
-            # allow the camera to warmup
-            time.sleep(0.1)
-            # grab an image from the camera
-            camera.capture(rawCapture, format="bgr")
-            camera.close_preview()
-            camera.close()
+            try:
+                camera.resolution = (2048, 1536)
+                rawCapture = PiRGBArray(camera)
+                # allow the camera to warmup
+                time.sleep(0.1)
+                # grab an image from the camera
+                camera.capture(rawCapture, format="bgr")
+                camera.stop_preview()
+            finally:
+                camera.close()
             image = rawCapture.array
             status = cv2.imwrite(filename, image)
-            cv2.waitKey(0)
+            cv2.waitKey(1)
             if not status:
                 raise Exception("Error: image '{}' did not save".format(filename))
         return filename, date_time
