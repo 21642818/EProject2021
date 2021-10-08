@@ -1,7 +1,8 @@
 from datetime import datetime
 from plant import SmartPlant
 import os
-
+from firebase import firebase
+from google.cloud import storage
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 os.system('sudo htpdate -s firebase.google.com')
@@ -28,7 +29,7 @@ def post_firebase():
 
 if __name__ == '__main__':
     scheduler = BlockingScheduler()
-    scheduler.add_job(update_database, 'interval', seconds=30)
+    scheduler.add_job(post_firebase, 'interval', seconds=30)
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
 
     try:
