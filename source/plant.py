@@ -114,9 +114,10 @@ class SmartPlant:
         '''
         # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 2.929132167V
         voltage = self.__adc.read_voltage(channel)
+        print(voltage)
         #offset = self.__adc_offset[channel - 1]
         #level = ((5.060569 - voltage)/(5.060569 - offset) ) * 100
-        level = (5.060569 - voltage) * 10
+        level = (5.060569-voltage) * 10
         return round(level, 3)
 
     def read_moisture_levels(self):
@@ -237,7 +238,7 @@ class SmartPlant:
         json_object = json.dumps(self.__data, indent=4)
         return json_object
 
-    def water(self, pumps=[0,0,0,0], duration = 1, trigger_levels ):
+    def water(self, pumps=[0,0,0,0], duration = 1, trigger_levels=[] ):
         '''
         Waters the plants by turning on the valves for a duration of time
         
