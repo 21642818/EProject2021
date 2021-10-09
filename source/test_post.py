@@ -9,7 +9,8 @@ firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb
 
 def post_firebase_test():
     data = {
-        "watering" : [1,0,0,0]
+        "watering" : [1,0,0,0],
+        "triggers" : [5,5,5,5],
     }
     folder = "/cmd/"
     result = firebase.post(url=folder, data=data)
@@ -22,6 +23,11 @@ def get_firebase_test():
     if result != None:
         for r in result:
             print(result[r]["watering"])
+            try:
+                print(result[r]["triggers"])
+            except:
+                print("No new triggers")
+                break
 
 def delete_firebase_test():
     folder = "/cmd/"

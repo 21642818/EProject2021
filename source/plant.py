@@ -21,8 +21,6 @@ class SmartPlant:
     __Relay_Ch_5 = 26
     __Float_sw = 21
 
-    __adc_offset = [ 2.83786625, 2.83786625, 2.83786625, 2.83786625]
-
     def __init__(self) -> None:
 
         #initialize ADC
@@ -32,8 +30,13 @@ class SmartPlant:
         #initialize Temp&Hum sensor
         self.__sht = SHT20(1, resolution=SHT20.TEMP_RES_14bit)
 
-        # TODO read offset data from file
-        self.__adc_offset = [2.983771, 2.847210, 2.747443, 2.773041]
+        # TODO read levels data from file
+        file = open("moisture_levels_trigger.txt")
+        try:
+            trigger_levels = file.read().split('\n')
+        finally:
+            file.close()
+        self.__trigger_levels = [float(trigger_levels[0]), float(trigger_levels[1]), float(trigger_levels[2]), float(trigger_levels[3])]
 
     def gpio_init(self):
         GPIO.setmode(GPIO.BCM)
@@ -78,24 +81,27 @@ class SmartPlant:
         :type duration: int
         '''
         __valves_opened_flag = 0
-        # TODO Relpace time.sleep with something else. This halts the program and we don't want it
-        if self.read_float_switch == 0:
-            self.gpio_init()
-            for r in range(4):
-                GPIO.output(self.get_relay(r), relay_channels[r])
-                __valves_opened_flag = __valves_opened_flag | relay_channels[r]
-            if __valves_opened_flag:
+        for r in range(4):
+            __valves_opened_flag = __valves_opened_flag | relay_channels[r]
+        
+        # TODO Replace time.sleep with something else. This halts the program and we don't want it
+        if __valves_opened_flag:
+            if self.read_float_switch == 0:
+                self.gpio_init()
+                for r in range(4):
+                    GPIO.output(self.get_relay(r), relay_channels[r])
                 GPIO.output(self.get_relay(5), GPIO.HIGH)
                 time.sleep(duration)
                 GPIO.output(self.get_relay(5), GPIO.LOW)
-            for r in range(4):
-                GPIO.output(self.get_relay(r), GPIO.LOW)
-            GPIO.cleanup()
-            return True
-        else:
-            print("Error: water level is too low")
-            return False
-            # NOTE  Use GPIO.cleanup() after exit
+                for r in range(4):
+                    GPIO.output(self.get_relay(r), GPIO.LOW)
+                GPIO.cleanup()
+                return True
+            else:
+                print("Error: water level is too low")
+                return False
+        return True
+        # NOTE  Use GPIO.cleanup() after exit
 
     def get_moisture(self, channel):
         '''
@@ -110,10 +116,8 @@ class SmartPlant:
         voltage = self.__adc.read_voltage(channel)
         #offset = self.__adc_offset[channel - 1]
         #level = ((5.060569 - voltage)/(5.060569 - offset) ) * 100
-        level = 5.060569 - voltage*10
-        if (level < 0.0) and (level > 100.0):
-            level = None
-        return round(level, 2)
+        level = (5.060569 - voltage) * 10
+        return round(level, 3)
 
     def read_moisture_levels(self):
         '''
@@ -123,7 +127,13 @@ class SmartPlant:
         :return: moisture of channels
         :rtype: list
         '''
-        return [self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4) ]
+        pump = [0,0,0,0]
+        moisture_levels = [self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)]
+        for x in range(4):
+            if moisture_levels[x] < self.__trigger_levels[x]:
+                pump[x] = 1
+        self.set_pump(pump, 1)
+        return [self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)]
 
     def capture_image(self):
         '''
@@ -137,7 +147,7 @@ class SmartPlant:
         #initialize Camera
         with PiCamera() as camera:
             try:
-                camera.resolution = (2048, 1536)
+                camera.resolution = (3280, 2464)
                 rawCapture = PiRGBArray(camera)
                 # allow the camera to warmup
                 time.sleep(0.1)
@@ -227,7 +237,7 @@ class SmartPlant:
         json_object = json.dumps(self.__data, indent=4)
         return json_object
 
-    def water(self, pumps=[0,0,0,0], duration = 1):
+    def water(self, pumps=[0,0,0,0], duration = 1, trigger_levels ):
         '''
         Waters the plants by turning on the valves for a duration of time
         
@@ -236,5 +246,6 @@ class SmartPlant:
         :param duration: seconds
         :type duration: int
         '''
+        self.__trigger_levels = trigger_levels
         return self.set_pump(pumps,duration)
 
