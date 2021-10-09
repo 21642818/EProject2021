@@ -9,7 +9,7 @@ firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb
 
 def post_firebase_test():
     data = {
-        "watering" : [1,0,0,0],
+        "watering" : [0,0,1,0],
         "triggers" : [5,5,5,5],
     }
     folder = "/cmd/"
@@ -34,4 +34,4 @@ def delete_firebase_test():
     result = firebase.delete(url=folder, name=None)
     print(result)
 
-get_firebase_test()
+post_firebase_test()

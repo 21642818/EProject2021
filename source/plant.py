@@ -86,13 +86,13 @@ class SmartPlant:
         
         # TODO Replace time.sleep with something else. This halts the program and we don't want it
         if __valves_opened_flag:
-            if self.read_float_switch == 0:
+            if True: #self.read_float_switch == 0:
                 self.gpio_init()
                 for r in range(4):
                     GPIO.output(self.get_relay(r), relay_channels[r])
-                GPIO.output(self.get_relay(5), GPIO.HIGH)
+                GPIO.output(self.get_relay(4), GPIO.HIGH)
                 time.sleep(duration)
-                GPIO.output(self.get_relay(5), GPIO.LOW)
+                GPIO.output(self.get_relay(4), GPIO.LOW)
                 for r in range(4):
                     GPIO.output(self.get_relay(r), GPIO.LOW)
                 GPIO.cleanup()
@@ -114,7 +114,7 @@ class SmartPlant:
         '''
         # NOTE Max voltage of Soil Sensor out of soil is 5.060569V, submersed is 2.929132167V
         voltage = self.__adc.read_voltage(channel)
-        print(voltage)
+        #print(voltage)
         #offset = self.__adc_offset[channel - 1]
         #level = ((5.060569 - voltage)/(5.060569 - offset) ) * 100
         level = (5.060569-voltage) * 10
@@ -186,7 +186,7 @@ class SmartPlant:
         GPIO.setup(self.__Float_sw, GPIO.IN)
         state = GPIO.input(self.__Float_sw)
         GPIO.cleanup()
-        return state # HIGH (1) means empty, LOW (0) means full
+        return 0 #state # HIGH (1) means empty, LOW (0) means full
 
     def measure(self):
         '''
@@ -197,7 +197,8 @@ class SmartPlant:
         if (hour > 8) and (hour < 20) : 
             file, img = self.capture_image()
         else :
-            file, img = None
+            file = None
+            img = None
         date_time = datetime.now()
         data = {
             "date"          : date_time.strftime("%Y-%m-%d"),
