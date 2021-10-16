@@ -1,3 +1,4 @@
+from time import process_time
 from plant import SmartPlant
 from google.cloud import storage
 import os
@@ -33,7 +34,10 @@ def get_firebase():
     if result != None:
         for r in result:
             watering = result[r]["watering"]
-            triggers = result[r]["triggers"]
+            try:
+                triggers = result[r]["triggers"]
+            except:
+             print('No triggers found')
             flag = sp.water(watering,1.5,triggers)
             if flag:
                 status = firebase.delete(folder, name=None)
