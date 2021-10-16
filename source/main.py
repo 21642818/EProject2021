@@ -48,7 +48,7 @@ if __name__ == '__main__':
     post_firebase()
     scheduler = BlockingScheduler(job_defaults={'max_instances': 2})
     scheduler.add_job(post_firebase, 'interval', seconds=1800)
-    scheduler.add_job(get_firebase, 'interval', seconds=300)
+    scheduler.add_job(get_firebase, 'interval', seconds=30)
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
 
     try:

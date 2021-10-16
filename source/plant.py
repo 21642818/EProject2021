@@ -37,6 +37,7 @@ class SmartPlant:
         finally:
             file.close()
         self.__trigger_levels = [float(trigger_levels[0]), float(trigger_levels[1]), float(trigger_levels[2]), float(trigger_levels[3])]
+        print(self.__trigger_levels)
 
     def gpio_init(self):
         GPIO.setmode(GPIO.BCM)
@@ -248,6 +249,16 @@ class SmartPlant:
         :param duration: seconds
         :type duration: int
         '''
+        trigger_change_flag = False
+        for i in range(4):
+            if self.__trigger_levels[i] != trigger_levels[i]:
+                trigger_change_flag = True
+                break
+        if trigger_change_flag:
+            with open("moisture_levels_trigger.txt", 'w') as f:
+                for line in trigger_levels:
+                    f.write(line)
+                    f.write('\n')
         self.__trigger_levels = trigger_levels
         return self.set_pump(pumps,duration)
 
