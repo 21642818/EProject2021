@@ -34,7 +34,7 @@ def get_firebase():
         for r in result:
             watering = result[r]["watering"]
             triggers = result[r]["triggers"]
-            flag = sp.water(watering,1,triggers)
+            flag = sp.water(watering,1.5,triggers)
             if flag:
                 status = firebase.delete(folder, name=None)
                 print(status)
@@ -45,6 +45,7 @@ def get_firebase():
     pass
 
 if __name__ == '__main__':
+    post_firebase()
     scheduler = BlockingScheduler(job_defaults={'max_instances': 2})
     scheduler.add_job(post_firebase, 'interval', seconds=1800)
     scheduler.add_job(get_firebase, 'interval', seconds=300)

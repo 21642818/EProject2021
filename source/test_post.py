@@ -9,8 +9,8 @@ firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb
 
 def post_firebase_test():
     data = {
-        "watering" : [0,0,1,0],
-        "triggers" : [5,5,5,5],
+        "watering" : [1,1,1,1],
+        "triggers" : [15,15,15,15],
     }
     folder = "/cmd/"
     result = firebase.post(url=folder, data=data)
