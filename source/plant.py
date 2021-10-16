@@ -250,10 +250,13 @@ class SmartPlant:
         :type duration: int
         '''
         trigger_change_flag = False
-        for i in range(4):
-            if self.__trigger_levels[i] != trigger_levels[i]:
-                trigger_change_flag = True
-                break
+        try:
+            for i in range(4):
+                if self.__trigger_levels[i] != trigger_levels[i]:
+                    trigger_change_flag = True
+                    break
+        except:
+            print("No triggers added")
         if trigger_change_flag:
             with open("moisture_levels_trigger.txt", 'w') as f:
                 for line in trigger_levels:
