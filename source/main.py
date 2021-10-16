@@ -4,6 +4,7 @@ from google.cloud import storage
 import os
 from firebase import firebase
 from apscheduler.schedulers.blocking import BlockingScheduler
+import faulthandler; faulthandler.enable()
 
 os.system('sudo htpdate -s firebase.google.com')
 
