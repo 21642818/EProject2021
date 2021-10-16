@@ -37,7 +37,8 @@ def get_firebase():
             try:
                 triggers = result[r]["triggers"]
             except:
-             print('No triggers found')
+                print('No triggers found')
+                triggers = None
             flag = sp.water(watering,1.5,triggers)
             if flag:
                 status = firebase.delete(folder, name=None)
