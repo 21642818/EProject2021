@@ -87,7 +87,7 @@ class SmartPlant:
         
         # TODO Replace time.sleep with something else. This halts the program and we don't want it
         if __valves_opened_flag:
-            if True: #self.read_float_switch == 0:
+            if self.read_float_switch == 0:
                 self.gpio_init()
                 for r in range(4):
                     GPIO.output(self.get_relay(r), relay_channels[r])
@@ -257,11 +257,16 @@ class SmartPlant:
                     break
         except:
             print("No triggers added")
+            trigger_change_flag = False
         if trigger_change_flag:
             with open("moisture_levels_trigger.txt", 'w') as f:
                 for line in trigger_levels:
                     f.write(line)
                     f.write('\n')
-        self.__trigger_levels = trigger_levels
+            self.__trigger_levels = trigger_levels
         return self.set_pump(pumps,duration)
+    
+    def calibrate(self):
+        print()
+        self.read_moisture_levels
 
