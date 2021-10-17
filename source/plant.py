@@ -294,7 +294,7 @@ class SmartPlant:
         cali_3 = np.array(self.read_moisture_levels())
         self.max_calibration = (cali_1+cali_2+cali_3)/3.0
         self.max_calibration = self.max_calibration.tolist()
-        print('Calibration for measurements out of soil:\n',self.max_calibration)
+        print('Calibration for measurements submerged:\n',self.max_calibration)
         input('Press Enter to continue...')
         os.system('clear')
         with open("moisture_levels_calibration.txt", 'w') as f:
