@@ -87,12 +87,13 @@ class SmartPlant:
         :type duration: int
         '''
         __valves_opened_flag = 0
+        float_switch = self.read_float_switch
         for r in range(4):
             __valves_opened_flag = __valves_opened_flag | relay_channels[r]
         
         # TODO Replace time.sleep with something else. This halts the program and we don't want it
         if __valves_opened_flag:
-            if self.read_float_switch == 0:
+            if float_switch == 0:
                 self.gpio_init()
                 for r in range(4):
                     GPIO.output(self.get_relay(r), relay_channels[r])
@@ -281,17 +282,17 @@ class SmartPlant:
         print("Measurements will be first out of soil in open air for minimum value. \nSecondly submerged in water for maximum value")
         print("\nStart measuring soil sensors out of water\n")
         input('Press Enter to start measurement')
-        cali_1 = np.array(self.read_moisture_levels())
-        cali_2 = np.array(self.read_moisture_levels())
-        cali_3 = np.array(self.read_moisture_levels())
+        cali_1 = np.array([self.get_moisture(0), self.get_moisture(1), self.get_moisture(2), self.get_moisture(3)])
+        cali_2 = np.array([self.get_moisture(0), self.get_moisture(1), self.get_moisture(2), self.get_moisture(3)])
+        cali_3 = np.array([self.get_moisture(0), self.get_moisture(1), self.get_moisture(2), self.get_moisture(3)])
         self.min_calibration = (cali_1+cali_2+cali_3)/3.0
         self.min_calibration = self.min_calibration.tolist()
         print('Calibration for measurements out of soil:\n',self.min_calibration)
         print("\nStart measuring soil sensors submerged in water\n")
         input('Press Enter to start measurement')
-        cali_1 = np.array(self.read_moisture_levels())
-        cali_2 = np.array(self.read_moisture_levels())
-        cali_3 = np.array(self.read_moisture_levels())
+        cali_1 = np.array([self.get_moisture(0), self.get_moisture(1), self.get_moisture(2), self.get_moisture(3)])
+        cali_2 = np.array([self.get_moisture(0), self.get_moisture(1), self.get_moisture(2), self.get_moisture(3)])
+        cali_3 = np.array([self.get_moisture(0), self.get_moisture(1), self.get_moisture(2), self.get_moisture(3)])
         self.max_calibration = (cali_1+cali_2+cali_3)/3.0
         self.max_calibration = self.max_calibration.tolist()
         print('Calibration for measurements submerged:\n',self.max_calibration)
