@@ -8,13 +8,19 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/var/local/eproject2021-555cc-fire
 firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb.europe-west1.firebasedatabase.app/', None)
 
 def post_firebase_test():
-    data = {
+    data_watering = {
         "watering" : [1,1,1,1],
+        
+    }
+    data_triggers = {
         "triggers" : [15,15,15,15],
     }
-    folder = "/cmd/"
-    result = firebase.post(url=folder, data=data)
-    print(result)
+    folder_watering = "/cmd/"
+    folder_triggers = "trig/"
+    result_watering = firebase.post(url=folder_watering, data=data_watering)
+    firebase.delete(folder_triggers)
+    result_triggers = firebase.post(url=folder_triggers, data=data_triggers)
+    print(result_watering, result_triggers)
 
 def get_firebase_test():
     folder = "/cmd/"

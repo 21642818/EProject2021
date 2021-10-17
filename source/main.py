@@ -30,8 +30,8 @@ def post_firebase():
     pass
 
 def get_firebase():
-    folder = "/cmd/"
-    result = firebase.get(folder, None)
+    folder_cmd = "/cmd/"
+    result = firebase.get(folder_cmd, None)
     if result != None:
         for r in result:
             watering = result[r]["watering"]

@@ -36,6 +36,7 @@ class SmartPlant:
             trigger_levels = file.read().split('\n')
         finally:
             file.close()
+        print(trigger_levels)
         self.__trigger_levels = [float(trigger_levels[0]), float(trigger_levels[1]), float(trigger_levels[2]), float(trigger_levels[3])]
         print(self.__trigger_levels)
 
