@@ -265,8 +265,8 @@ class SmartPlant:
         return self.set_pump(pumps,duration)
     
     def calibrate(self):
-        self.max_calibration = list(float)
-        self.min_calibration = list(float)
+        self.max_calibration = list()
+        self.min_calibration = list()
         os.system('clear')
         print("**********************************")
         print("\tMoisture calibration")
