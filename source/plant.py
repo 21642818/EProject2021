@@ -94,6 +94,9 @@ class SmartPlant:
         # TODO Replace time.sleep with something else. This halts the program and we don't want it
         if __valves_opened_flag:
             if float_switch == 0:
+                print("Error: water level is too low")
+                return False
+            else:
                 self.gpio_init()
                 for r in range(4):
                     GPIO.output(self.get_relay(r), relay_channels[r])
@@ -104,9 +107,6 @@ class SmartPlant:
                     GPIO.output(self.get_relay(r), GPIO.LOW)
                 GPIO.cleanup()
                 return True
-            else:
-                print("Error: water level is too low")
-                return False
         return True
         # NOTE  Use GPIO.cleanup() after exit
 
