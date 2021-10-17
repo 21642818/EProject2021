@@ -49,10 +49,10 @@ def get_firebase():
     flag = sp.water(watering,1.5,triggers)
     if flag:
         status = firebase.delete(folder_cmd, name=None)
-        print(status)
         status = firebase.delete(url="/flags/", name=None)
     else:
         status = firebase.post(url="/flags/", data={"watered" : flag})
+    #print(status)
     pass
 
 if __name__ == '__main__':
