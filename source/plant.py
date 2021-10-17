@@ -93,7 +93,7 @@ class SmartPlant:
         
         # TODO Replace time.sleep with something else. This halts the program and we don't want it
         if __valves_opened_flag:
-            if float_switch:
+            if float_switch == False:
                 print("Error: water level is too low")
                 return False
             else:
