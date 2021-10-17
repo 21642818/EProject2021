@@ -263,7 +263,7 @@ class SmartPlant:
         if trigger_change_flag:
             with open("moisture_levels_trigger.txt", 'w') as f:
                 for line in trigger_levels:
-                    f.write(line)
+                    f.write(str(line))
                     f.write('\n')
             self.__trigger_levels = trigger_levels
         return self.set_pump(pumps,duration)
