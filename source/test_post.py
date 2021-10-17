@@ -9,14 +9,14 @@ firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb
 
 def post_firebase_test():
     data_watering = {
-        "watering" : [1,1,1,1],
+        "watering" : [0,0,0,0],
         
     }
     data_triggers = {
         "triggers" : [15,15,15,15],
     }
     folder_watering = "/cmd/"
-    folder_triggers = "trig/"
+    folder_triggers = "/trig/"
     result_watering = firebase.post(url=folder_watering, data=data_watering)
     firebase.delete(folder_triggers)
     result_triggers = firebase.post(url=folder_triggers, data=data_triggers)

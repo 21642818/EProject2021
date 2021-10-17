@@ -31,23 +31,28 @@ def post_firebase():
 
 def get_firebase():
     folder_cmd = "/cmd/"
-    result = firebase.get(folder_cmd, None)
-    if result != None:
-        for r in result:
-            watering = result[r]["watering"]
-            try:
-                triggers = result[r]["triggers"]
-            except:
-                print('No triggers found')
-                triggers = None
-            flag = sp.water(watering,1.5,triggers)
-            if flag:
-                status = firebase.delete(folder, name=None)
-                print(status)
-                status = firebase.delete(url="/flags/", name=None)
-            else:
-                status = firebase.post(url="/flags/", data={"watered" : flag})
+    folder_trig = "/trig/"
+    result_cmd = firebase.get(folder_cmd, None)
+    result_trig = firebase.get(folder_trig, None)
+    if result_cmd != None:
+        for r in result_cmd:
+            watering = result_cmd[r]["watering"]
             break
+    else:
+        watering = [0, 0, 0, 0]
+    if result_trig != None:
+        for t in result_trig:
+            triggers = result_trig[t]["triggers"]
+    else:
+        triggers = None
+
+    flag = sp.water(watering,1.5,triggers)
+    if flag:
+        status = firebase.delete(folder_cmd, name=None)
+        print(status)
+        status = firebase.delete(url="/flags/", name=None)
+    else:
+        status = firebase.post(url="/flags/", data={"watered" : flag})
     pass
 
 if __name__ == '__main__':

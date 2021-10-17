@@ -241,7 +241,7 @@ class SmartPlant:
         json_object = json.dumps(self.__data, indent=4)
         return json_object
 
-    def water(self, pumps=[0,0,0,0], duration = 1, trigger_levels=[] ):
+    def water(self, pumps=[0,0,0,0], duration = 1, trigger_levels=[]):
         '''
         Waters the plants by turning on the valves for a duration of time
         
