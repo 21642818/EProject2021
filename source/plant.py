@@ -93,7 +93,7 @@ class SmartPlant:
         
         # TODO Replace time.sleep with something else. This halts the program and we don't want it
         if __valves_opened_flag:
-            if float_switch == 0:
+            if float_switch:
                 print("Error: water level is too low")
                 return False
             else:
@@ -193,7 +193,7 @@ class SmartPlant:
         GPIO.setup(self.__Float_sw, GPIO.IN)
         state = GPIO.input(self.__Float_sw)
         GPIO.cleanup()
-        return 0 #state # HIGH (1) means empty, LOW (0) means full
+        return False #state # HIGH (1) means empty, LOW (0) means full
 
     def measure(self):
         '''
