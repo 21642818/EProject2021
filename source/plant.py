@@ -280,7 +280,7 @@ class SmartPlant:
         cali_3 = np.array(self.read_moisture_levels())
         self.min_calibration = (cali_1+cali_2+cali_3)/3.0
         self.min_calibration = self.min_calibration.tolist()
-        print('Calibration for measurements out of soil:\n\n',self.min_calibration)
+        print('Calibration for measurements out of soil:\n',self.min_calibration)
         print("\nStart measuring soil sensors submerged in water\n")
         input('Press Enter to start measurement')
         cali_1 = np.array(self.read_moisture_levels())
@@ -288,7 +288,7 @@ class SmartPlant:
         cali_3 = np.array(self.read_moisture_levels())
         self.max_calibration = (cali_1+cali_2+cali_3)/3.0
         self.max_calibration = self.max_calibration.tolist()
-        print('Calibration for measurements out of soil:\n\n',self.max_calibration)
+        print('Calibration for measurements out of soil:\n',self.max_calibration)
         input('Press Enter to continue...')
         os.system('clear')
         return self.min_calibration, self.max_calibration
