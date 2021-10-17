@@ -9,8 +9,8 @@ sp = SmartPlant()
 
 (min_cali, max_cali) = sp.calibrate()
 data = {
-    min: min_cali,
-    max: max_cali,
+    'min': min_cali,
+    'max': max_cali,
 }
 folder = "/calibration/"
 result = firebase.get(url=folder, name=None)
