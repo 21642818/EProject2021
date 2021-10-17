@@ -36,6 +36,12 @@ class SmartPlant:
             trigger_levels = file.read().split('\n')
         finally:
             file.close()
+        file = open("moisture_levels_calibration.txt")
+        try:
+            calibration_levels = file.read().split('\n')
+        finally:
+            file.close()
+        self.__calibration_levels = [float( calibration_levels[0]), float( calibration_levels[1]), float( calibration_levels[2]), float( calibration_levels[3])]
         self.__trigger_levels = [float(trigger_levels[0]), float(trigger_levels[1]), float(trigger_levels[2]), float(trigger_levels[3])]
 
     def gpio_init(self):
@@ -291,6 +297,15 @@ class SmartPlant:
         print('Calibration for measurements out of soil:\n',self.max_calibration)
         input('Press Enter to continue...')
         os.system('clear')
+        with open("moisture_levels_calibration.txt", 'w') as f:
+            for line in self.min_calibration:
+                f.write(str(line))
+                f.write('\n')
+            for line in self.max_calibration:
+                f.write(str(line))
+                f.write('\n')
+        self.__calibration_levels = [self.min_calibration, self.max_calibration]
+
         return self.min_calibration, self.max_calibration
         
 
