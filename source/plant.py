@@ -265,6 +265,33 @@ class SmartPlant:
         return self.set_pump(pumps,duration)
     
     def calibrate(self):
-        print()
-        self.read_moisture_levels
+        self.max_calibration = []
+        self.min_calibration = []
+        os.system('clear')
+        print("*************************")
+        print("\tMoisture calibration")
+        print("*************************")
+        print("System will take three measurements to calibrate sensors. \nAverage of measurements will be used for calibration.")
+        print("Measurements will be first out of soil in open air for minimum value. \nSecondly submerged in water for maximum value")
+        print("\nStart measuring soil sensors out of water\n")
+        input('Press Enter to start measurement')
+        cali_1 = self.read_moisture_levels()
+        cali_2 = self.read_moisture_levels()
+        cali_3 = self.read_moisture_levels()
+        for i in range(4):
+            self.min_calibration[i] = (cali_1[i]+cali_2[i]+cali_3[i])/3
+        print('Calibration for measurements out of soil:\n\t',self.min_calibration)
+        print("\nStart measuring soil sensors submerged in water\n")
+        input('Press Enter to start measurement')
+        cali_1 = self.read_moisture_levels()
+        cali_2 = self.read_moisture_levels()
+        cali_3 = self.read_moisture_levels()
+        for i in range(4):
+            self.max_calibration[i] = (cali_1[i]+cali_2[i]+cali_3[i])/3
+        print('Calibration for measurements out of soil:\n\t',self.max_calibration)
+        input('Press Enter to continue...')
+        os.system('clear')
+        return self.min_calibration, self.max_calibration
+        
+
 
