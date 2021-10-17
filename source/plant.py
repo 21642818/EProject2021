@@ -259,6 +259,7 @@ class SmartPlant:
         except:
             print("No triggers added")
             trigger_change_flag = False
+        print(trigger_change_flag)
         if trigger_change_flag:
             with open("moisture_levels_trigger.txt", 'w') as f:
                 for line in trigger_levels:
