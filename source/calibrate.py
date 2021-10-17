@@ -17,6 +17,6 @@ result = firebase.get(url=folder, name=None)
 if result != None:
     for r in result:
         update_folder = folder+r
-        firebase.put(url=update_folder, data=data)
+        firebase.put(url=update_folder, name=None, data=data)
 else:
     firebase.post(url=folder, data=data)
