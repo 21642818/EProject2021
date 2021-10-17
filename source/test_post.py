@@ -18,7 +18,7 @@ def post_firebase_test():
     folder_watering = "/cmd/"
     folder_triggers = "/trig/"
     result_watering = firebase.post(url=folder_watering, data=data_watering)
-    firebase.delete(folder_triggers)
+    firebase.delete(folder_triggers,None)
     result_triggers = firebase.post(url=folder_triggers, data=data_triggers)
     print(result_watering, result_triggers)
 
