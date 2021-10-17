@@ -278,8 +278,10 @@ class SmartPlant:
         cali_1 = self.read_moisture_levels()
         cali_2 = self.read_moisture_levels()
         cali_3 = self.read_moisture_levels()
+        print(cali_1, cali_2, cali_3)
+        self.min_calibration = (cali_1+cali_2+cali_3)/3.0
+        print(self.min_calibration)
         for i in range(4):
-            print(cali_1[i])
             self.min_calibration[i] = (cali_1[i]+cali_2[i]+cali_3[i])/3
         print('Calibration for measurements out of soil:\n\t',self.min_calibration)
         print("\nStart measuring soil sensors submerged in water\n")
