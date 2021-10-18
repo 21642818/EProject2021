@@ -56,6 +56,7 @@ def get_firebase():
     pass
 
 if __name__ == '__main__':
+    get_firebase()
     post_firebase()
     scheduler = BlockingScheduler(job_defaults={'max_instances': 2})
     scheduler.add_job(post_firebase, 'interval', seconds=1800)
