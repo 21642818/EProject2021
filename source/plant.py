@@ -141,6 +141,7 @@ class SmartPlant:
             if moisture_levels[x] < self.__trigger_levels[x]:
                 pump[x] = 1
         self.set_pump(pump, 1)
+        time.sleep(0.2)
         return [self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)]
 
     def capture_image(self):
