@@ -3,7 +3,8 @@ import time
 
 float_sw = 4
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(float_sw, GPIO.IN)
+
+GPIO.setup(float_sw, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 while True:
     state = GPIO.input(float_sw)
