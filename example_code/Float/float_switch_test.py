@@ -8,5 +8,6 @@ GPIO.setup(float_sw, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 while True:
     state = GPIO.input(float_sw)
+    state = not (state)
     print('Float Switch:', state)
     time.sleep(0.5)

@@ -193,7 +193,8 @@ class SmartPlant:
         GPIO.setup(self.__Float_sw, GPIO.IN)
         state = GPIO.input(self.__Float_sw)
         GPIO.cleanup()
-        return False #state # HIGH (1) means empty, LOW (0) means full
+        state = not (state)
+        return state #state # HIGH (1/True) means empty, LOW (0/False) means full
 
     def measure(self):
         '''
