@@ -13,7 +13,7 @@ def post_firebase_test():
         
     }
     data_triggers = {
-        "triggers" : [15,15,15,15],
+        "triggers" : [10,10,10,10],
     }
     folder_watering = "/cmd/"
     folder_triggers = "/trig/"

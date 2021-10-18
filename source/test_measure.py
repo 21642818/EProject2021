@@ -2,4 +2,5 @@ from plant import SmartPlant
 
 sp = SmartPlant()
 
-sp.calibrate()
+sp.measure()
+print(sp.return_data())
