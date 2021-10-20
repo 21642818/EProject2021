@@ -9,13 +9,14 @@ import faulthandler; faulthandler.enable()
 os.system('sudo htpdate -s firebase.google.com')
 
 sp = SmartPlant()
+picture_counter = 0
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/var/local/eproject2021-555cc-firebase-adminsdk-94yit-faec66311f.json"
 firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb.europe-west1.firebasedatabase.app/', None)
 client = storage.Client()
 bucket = client.get_bucket('eproject2021-555cc.appspot.com')
 
-def post_firebase():
+def post_firebase(self):
     sp.measure()
     data = sp.return_data()
     folder = '/data/'+data['date']+'/'+data['timestamp']

@@ -197,17 +197,18 @@ class SmartPlant:
         state = not (state)
         return state #state # HIGH (1/True) means empty, LOW (0/False) means full
 
-    def measure(self):
+    def measure(self, take_picture=False):
         '''
         Runs the measurements and capture
         it to a dictionary
         '''
         hour = datetime.now().hour
-        if (hour > 8) and (hour < 20) : 
-            file, img = self.capture_image()
-        else :
-            file = None
-            img = None
+        if take_picture:
+            if (hour > 6) and (hour < 18) : 
+                file, img = self.capture_image()
+            else :
+                file = None
+                img = None
         date_time = datetime.now()
         data = {
             "date"          : date_time.strftime("%Y-%m-%d"),
