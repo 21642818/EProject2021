@@ -17,7 +17,14 @@ client = storage.Client()
 bucket = client.get_bucket('eproject2021-555cc.appspot.com')
 
 def post_firebase(self):
-    sp.measure()
+    if post_firebase.image_counter >=4:
+        post_firebase.image_counter = 0
+        image_capture_flag = True
+    else:
+        post_firebase.image_counter += 1
+        image_capture_flag = False
+    
+    sp.measure(take_picture=image_capture_flag)
     data = sp.return_data()
     folder = '/data/'+data['date']+'/'+data['timestamp']
     print(data)
@@ -57,10 +64,11 @@ def get_firebase():
     pass
 
 if __name__ == '__main__':
+    post_firebase.image_counter = -1
     get_firebase()
     post_firebase()
     scheduler = BlockingScheduler(job_defaults={'max_instances': 2})
-    scheduler.add_job(post_firebase, 'interval', seconds=1800)
+    scheduler.add_job(post_firebase, 'interval', seconds=900)
     scheduler.add_job(get_firebase, 'interval', seconds=30)
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
 

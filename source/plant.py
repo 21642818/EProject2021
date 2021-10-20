@@ -201,14 +201,17 @@ class SmartPlant:
         '''
         Runs the measurements and capture
         it to a dictionary
+
+        :param take_picture: True or False
+        :type take_picture: boolean
         '''
         hour = datetime.now().hour
         if take_picture:
             if (hour > 6) and (hour < 18) : 
                 file, img = self.capture_image()
-            else :
-                file = None
-                img = None
+        else :
+            file = None
+            img = None
         date_time = datetime.now()
         data = {
             "date"          : date_time.strftime("%Y-%m-%d"),
