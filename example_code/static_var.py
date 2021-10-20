@@ -1,13 +1,13 @@
 import time
 
 def func():
-    if func.counter > 8:
+    if func.counter >= 7:
         func.counter = 0
     else:
         func.counter += 1
     return func.counter
 
-func.counter = 0
+func.counter = -1
 
 while True:
     print(func())
