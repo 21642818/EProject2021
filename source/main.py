@@ -17,7 +17,7 @@ client = storage.Client()
 bucket = client.get_bucket('eproject2021-555cc.appspot.com')
 
 def post_firebase():
-    if post_firebase.image_counter >=4:
+    if post_firebase.image_counter >= 3:
         post_firebase.image_counter = 0
         image_capture_flag = True
     else:
