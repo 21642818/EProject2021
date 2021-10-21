@@ -5,7 +5,10 @@ from firebase import firebase
 os.system('sudo htpdate -s firebase.google.com')
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/var/local/eproject2021-555cc-firebase-adminsdk-94yit-faec66311f.json"
-firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb.europe-west1.firebasedatabase.app/', None)
+auth = firebase.FirebaseAuthentication(secret='THIS_IS_MY_SECRET',email='gerth.mmarais@gmail.com')
+firebase.authentication = auth
+firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb.europe-west1.firebasedatabase.app/', auth)
+
 
 def post_firebase_test():
     data_watering = {
@@ -13,7 +16,7 @@ def post_firebase_test():
         
     }
     data_triggers = {
-        "triggers" : [10,10,10,10],
+        "triggers" : [5,5,5,5],
     }
     folder_watering = "/cmd/"
     folder_triggers = "/trig/"
