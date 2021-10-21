@@ -67,7 +67,7 @@ if __name__ == '__main__':
     post_firebase.image_counter = -1
     get_firebase()
     post_firebase()
-    scheduler = BlockingScheduler(job_defaults={'max_instances': 2})
+    scheduler = BlockingScheduler(job_defaults={'max_instances': 3})
     scheduler.add_job(post_firebase, 'interval', seconds=900)
     scheduler.add_job(get_firebase, 'interval', seconds=30)
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
