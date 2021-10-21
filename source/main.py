@@ -12,7 +12,9 @@ sp = SmartPlant()
 picture_counter = 0
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/var/local/eproject2021-555cc-firebase-adminsdk-94yit-faec66311f.json"
-firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb.europe-west1.firebasedatabase.app/', None)
+auth = firebase.FirebaseAuthentication(secret='TFpXyKJjxfoQwed62o5mDFlXwT8h16JlxNmZHqHC', email='gerth.mmarais@gmail.com')
+firebase.authentication = auth
+firebase = firebase.FirebaseApplication('https://eproject2021-555cc-default-rtdb.europe-west1.firebasedatabase.app/', auth)
 client = storage.Client()
 bucket = client.get_bucket('eproject2021-555cc.appspot.com')
 
