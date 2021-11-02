@@ -24,7 +24,7 @@ class SmartPlant:
     def __init__(self) -> None:
 
         #initialize ADC
-        self.__adc = ADCPi(0x68, 18)
+        self.__adc = ADCPi(0x68, 16)
         self.__adc.set_conversion_mode(0)
 
         #initialize Temp&Hum sensor
