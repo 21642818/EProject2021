@@ -207,9 +207,9 @@ class SmartPlant:
         '''
         hour = datetime.now().hour
         if take_picture:
-            if (hour > 6) and (hour < 18) : 
+            if (hour > 6) and (hour < 18):
                 file, img = self.capture_image()
-        else :
+        elif take_picture == False:
             file = None
             img = None
         date_time = datetime.now()
