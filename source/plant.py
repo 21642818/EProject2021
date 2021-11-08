@@ -105,6 +105,7 @@ class SmartPlant:
                     GPIO.output(self.get_relay(r), GPIO.LOW)
                 GPIO.cleanup()
                 return float_switch
+        return float_switch
         # NOTE  Use GPIO.cleanup() after exit
 
     def get_moisture(self, channel):
