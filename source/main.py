@@ -60,7 +60,7 @@ def get_firebase():
         status = firebase.delete(folder_cmd, name=None)
         status = firebase.delete(url="/flags/", name=None)
     else:
-        status = firebase.post(url="/flags/", data={"watered" : flag})
+        status = firebase.post(url="/flags/", data={"float_switch" : flag})
     #print(status)
     pass
 
