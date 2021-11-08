@@ -85,7 +85,7 @@ class SmartPlant:
         :type duration: int
         '''
         __valves_opened_flag = 0
-        float_switch = self.read_float_switch
+        float_switch = self.read_float_switch()
         for r in range(4):
             __valves_opened_flag = __valves_opened_flag | relay_channels[r]
         
@@ -93,7 +93,7 @@ class SmartPlant:
         if __valves_opened_flag:
             if float_switch == False:
                 print("Error: water level is too low")
-                return False
+                return float_switch
             else:
                 self.gpio_init()
                 for r in range(4):
@@ -104,8 +104,7 @@ class SmartPlant:
                 for r in range(4):
                     GPIO.output(self.get_relay(r), GPIO.LOW)
                 GPIO.cleanup()
-                return True
-        return True
+                return float_switch
         # NOTE  Use GPIO.cleanup() after exit
 
     def get_moisture(self, channel):
@@ -192,8 +191,7 @@ class SmartPlant:
         GPIO.setup(self.__Float_sw, GPIO.IN)
         state = GPIO.input(self.__Float_sw)
         GPIO.cleanup()
-        state = not (state)
-        return state #state # HIGH (1/True) means empty, LOW (0/False) means full
+        return state #state # HIGH (1/True) means full, LOW (0/False) means empty
 
     def measure(self, take_picture=False):
         '''

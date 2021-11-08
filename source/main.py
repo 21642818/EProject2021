@@ -54,7 +54,7 @@ def get_firebase():
             triggers = result_trig[t]["triggers"]
     else:
         triggers = None
-
+    flag = False
     flag = sp.water(watering,1.5,triggers)
     #print(flag)
     if flag:
