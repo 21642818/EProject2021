@@ -62,7 +62,7 @@ def get_firebase():
         status = firebase.delete(folder_cmd, name=None)
     else:
         status = firebase.post(url="/flag/", data={"float_switch" : flag})
-    #print(status)
+    print('Get Status: ', status, 'Float Switch:' , flag)
     pass
 
 if __name__ == '__main__':
