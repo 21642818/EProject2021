@@ -190,6 +190,10 @@ class SmartPlant:
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.__Float_sw, GPIO.IN)
         state = GPIO.input(self.__Float_sw)
+        if state:
+            state = True
+        else:
+            state = False
         GPIO.cleanup()
         return state #state # HIGH (1/True) means full, LOW (0/False) means empty
 
