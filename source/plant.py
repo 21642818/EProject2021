@@ -1,9 +1,7 @@
-import time
-import os
-import json
+import time, os, json
+from datetime import datetime
 import numpy as np
 import RPi.GPIO as GPIO
-from datetime import datetime
 from ADC import ADCPi
 from sht20 import SHT20
 from picamera import PiCamera
