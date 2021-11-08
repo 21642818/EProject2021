@@ -23,8 +23,8 @@ def post_firebase_test():
     #result_watering = firebase.post(url=folder_watering, data=data_watering)
     #firebase.delete(folder_triggers,None)
     #result_triggers = firebase.post(url=folder_triggers, data=data_triggers)
-    firebase.post(url="/flags/", data={"float_switch" : False})
-    #print(result_watering, result_triggers)
+    result = firebase.post(url="/flag/", data={"float_switch" : False})
+    print(result)
 
 def get_firebase_test():
     folder = "/cmd/"
