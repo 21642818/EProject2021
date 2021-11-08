@@ -56,13 +56,13 @@ def get_firebase():
         triggers = None
 
     flag = sp.water(watering,1.5,triggers)
-    print(flag)
+    #print(flag)
     if flag:
         status = firebase.delete(url="/flag/", name=None)
         status = firebase.delete(folder_cmd, name=None)
     else:
         status = firebase.post(url="/flag/", data={"float_switch" : flag})
-    print(status)
+    #print(status)
     pass
 
 if __name__ == '__main__':
