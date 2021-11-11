@@ -12,11 +12,11 @@ class SmartPlant:
 
     __data = {}
     __last_img = None
-    __Relay_Ch_1 = 5
-    __Relay_Ch_2 = 6
-    __Relay_Ch_3 = 13
-    __Relay_Ch_4 = 19
-    __Relay_Ch_5 = 26
+    __Relay_Ch_1 = 5    #Plant 4
+    __Relay_Ch_2 = 6    #Plant 3
+    __Relay_Ch_3 = 13   #Plant 2
+    __Relay_Ch_4 = 19   #Plant 1
+    __Relay_Ch_5 = 26   #punmp
     __Float_sw = 21
 
     def __init__(self) -> None:
@@ -62,16 +62,16 @@ class SmartPlant:
         :return: channel
         :rtype: int
         '''
-        if channel == 0:
-            return self.__Relay_Ch_1
-        elif channel == 1:
-            return self.__Relay_Ch_5
-        elif channel == 2:
-            return self.__Relay_Ch_4
-        elif channel == 3:
+        if channel == 0:    #Plant 1
+            return self.__Relay_Ch_4 
+        elif channel == 1:  #Plant 2
             return self.__Relay_Ch_3
-        elif channel == 4:
+        elif channel == 2:  #Plant 3
             return self.__Relay_Ch_2
+        elif channel == 3:  #Plant 4
+            return self.__Relay_Ch_1
+        elif channel == 4:
+            return self.__Relay_Ch_5
         else:
             raise Exception("get_relay: Value {} is not valid".format(channel))
 
