@@ -44,4 +44,13 @@ def delete_firebase_test():
     result = firebase.delete(url=folder, name=None)
     print(result)
 
-post_firebase_test()
+def reverse_firebase():
+    result = firebase.get(url="/data/", name=None)
+    for date in result:
+        for time in date:
+            print(time)
+            break
+        break
+
+
+reverse_firebase()
