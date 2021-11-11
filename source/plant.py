@@ -65,13 +65,13 @@ class SmartPlant:
         if channel == 0:
             return self.__Relay_Ch_1
         elif channel == 1:
-            return self.__Relay_Ch_2
-        elif channel == 2:
-            return self.__Relay_Ch_3
-        elif channel == 3:
-            return self.__Relay_Ch_4
-        elif channel == 4:
             return self.__Relay_Ch_5
+        elif channel == 2:
+            return self.__Relay_Ch_4
+        elif channel == 3:
+            return self.__Relay_Ch_3
+        elif channel == 4:
+            return self.__Relay_Ch_2
         else:
             raise Exception("get_relay: Value {} is not valid".format(channel))
 
@@ -134,13 +134,13 @@ class SmartPlant:
         :rtype: list
         '''
         pump = [0,0,0,0]
-        moisture_levels = [self.get_moisture(4), self.get_moisture(3), self.get_moisture(2), self.get_moisture(1)]
+        moisture_levels = [self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)]
         for x in range(4):
             if moisture_levels[x] < self.__trigger_levels[x]:
                 pump[x] = 1
         self.set_pump(pump, 1.5)
         time.sleep(0.2)
-        return [self.get_moisture(4), self.get_moisture(3), self.get_moisture(2), self.get_moisture(1)]
+        return [self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)]
 
     def capture_image(self):
         '''
@@ -289,17 +289,17 @@ class SmartPlant:
         print("Measurements will be first out of soil in open air for minimum value. \nSecondly submerged in water for maximum value")
         print("\nStart measuring soil sensors out of water\n")
         input('Press Enter to start measurement')
-        cali_1 = np.array([self.get_moisture(4), self.get_moisture(3), self.get_moisture(2), self.get_moisture(1)])
-        cali_2 = np.array([self.get_moisture(4), self.get_moisture(3), self.get_moisture(2), self.get_moisture(1)])
-        cali_3 = np.array([self.get_moisture(4), self.get_moisture(3), self.get_moisture(2), self.get_moisture(1)])
+        cali_1 = np.array([self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)])
+        cali_2 = np.array([self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)])
+        cali_3 = np.array([self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)])
         self.min_calibration = (cali_1+cali_2+cali_3)/3.0
         self.min_calibration = self.min_calibration.tolist()
         print('Calibration for measurements out of soil:\n',self.min_calibration)
         print("\nStart measuring soil sensors submerged in water\n")
         input('Press Enter to start measurement')
-        cali_1 = np.array([self.get_moisture(4), self.get_moisture(3), self.get_moisture(2), self.get_moisture(1)])
-        cali_2 = np.array([self.get_moisture(4), self.get_moisture(3), self.get_moisture(2), self.get_moisture(1)])
-        cali_3 = np.array([self.get_moisture(4), self.get_moisture(3), self.get_moisture(2), self.get_moisture(1)])
+        cali_1 = np.array([self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)])
+        cali_2 = np.array([self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)])
+        cali_3 = np.array([self.get_moisture(1), self.get_moisture(2), self.get_moisture(3), self.get_moisture(4)])
         self.max_calibration = (cali_1+cali_2+cali_3)/3.0
         self.max_calibration = self.max_calibration.tolist()
         print('Calibration for measurements submerged:\n',self.max_calibration)
