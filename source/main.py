@@ -59,13 +59,7 @@ def get_firebase():
     #print(flag)
     if flag:
         status = firebase.delete(url="/flag/", name=None)
-        status = firebase.delete(folder_cmd, name=None)
-        sp.measure(take_picture=False)
-        data = sp.return_data()
-        folder = '/data/'+data['date']+'/'+data['timestamp']
-        print(data)
-        result = firebase.post(url=folder, data=data)
-        print(result)        
+        status = firebase.delete(folder_cmd, name=None)        
     else:
         firebase.delete(url="/flag/", name=None)
         status = firebase.post(url="/flag/", data={"float_switch" : flag})
