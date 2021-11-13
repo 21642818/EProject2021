@@ -1,6 +1,9 @@
 # EProject2021
 
-Skirpsie Project for SU
+Smart Desktop Plant Watering System.
+
+A repository for a Final Year Engineering project by Gerthardus Marais.
+
 
 ## To-Do list
 
