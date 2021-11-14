@@ -91,6 +91,7 @@ class SmartPlant:
         
         # TODO Replace time.sleep with something else. This halts the program and we don't want it
         if __valves_opened_flag:
+            print('---Watering---')
             if float_switch == False:
                 print("Error: water level is too low")
                 return float_switch
@@ -104,6 +105,7 @@ class SmartPlant:
                 for r in range(4):
                     GPIO.output(self.get_relay(r), GPIO.LOW)
                 GPIO.cleanup()
+                print('Watered:', relay_channels)
                 return float_switch
         return float_switch
         # NOTE  Use GPIO.cleanup() after exit
@@ -206,6 +208,7 @@ class SmartPlant:
         :param take_picture: True or False
         :type take_picture: boolean
         '''
+        print('---Measuring---')
         hour = datetime.now().hour
         if take_picture:
             if (hour > 6) and (hour < 18):
@@ -224,6 +227,8 @@ class SmartPlant:
             "img"           : img,
         }
         self.__data = data
+        print(data)
+
 
     def return_last_img_name(self):
         '''

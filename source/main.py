@@ -3,7 +3,9 @@ from google.cloud import storage
 import os
 from firebase import firebase
 from apscheduler.schedulers.blocking import BlockingScheduler
-import faulthandler; faulthandler.enable()
+import faulthandler; 
+
+faulthandler.enable()
 
 os.system('sudo htpdate -s firebase.google.com')
 
@@ -28,9 +30,8 @@ def post_firebase():
     sp.measure(take_picture=image_capture_flag)
     data = sp.return_data()
     folder = '/data/'+data['date']+'/'+data['timestamp']
-    print(data)
     result = firebase.post(url=folder, data=data)
-    print(result)
+    print('Firebase result:', result)
     if data["img_path"] != None:
         imageBlob = bucket.blob('/')
         imagePath = data["img_path"]
@@ -63,7 +64,8 @@ def get_firebase():
     else:
         firebase.delete(url="/flag/", name=None)
         status = firebase.post(url="/flag/", data={"float_switch" : flag})
-    #print('Get Status: ', status, 'Float Switch:' , flag)
+        print('Float Switch:' , flag, '\tFirebase result:', status)
+    #
     pass
 
 if __name__ == '__main__':

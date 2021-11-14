@@ -1,6 +1,5 @@
 import os
 from firebase import firebase
-from numpy.core.arrayprint import DatetimeFormat
 from plant import SmartPlant
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"]="/var/local/eproject2021-555cc-firebase-adminsdk-94yit-faec66311f.json"
